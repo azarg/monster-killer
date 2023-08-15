@@ -31,14 +31,14 @@ public class EnemyController : MonoBehaviour, IPointerClickHandler, IPointerExit
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        BattleManager.Instance.ApplyCurrentAttack(this, Input.mousePosition);
+        AttackManager.Instance.ApplyCurrentAttack(this, Input.mousePosition);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        BattleManager.Instance.RemoveAttackHighlight();
+        AttackManager.Instance.RemoveAttackHighlight();
     }
 
     public void OnPointerMove(PointerEventData eventData) {
-        BattleManager.Instance.HighlightAttackedEnemies(this, Input.mousePosition);
+        AttackManager.Instance.HighlightAttackedEnemies(this, Input.mousePosition);
     }
 }

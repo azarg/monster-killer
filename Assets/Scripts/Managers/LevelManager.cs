@@ -9,12 +9,16 @@ public class LevelManager : MonoBehaviour
     public EnemyController[,] enemies;
     public Level currentLevel;
     public static LevelManager Instance;
-    [SerializeField] GameObject monsterGrid;
-    [SerializeField] GameObject gridCellPrefab;
-    [SerializeField] RectTransform monsterPanel;
-    [SerializeField] float gridPadding;
 
-    [SerializeField] BattleManager battleManager;
+    [SerializeField] AttackManager attackManager;
+
+    [SerializeField] RectTransform monsterPanel;
+
+    [Header("Monster grid")]
+    [SerializeField] GameObject monsterGrid;
+    [SerializeField] float monsterGridPadding = 20f;
+    [SerializeField] GameObject gridCellPrefab;
+
 
     private void Awake() {
         Instance = this;
@@ -49,11 +53,11 @@ public class LevelManager : MonoBehaviour
         // resize the monster panel
         monsterPanel.gameObject.SetActive(true);
         Vector2 cellSize = grid.cellSize + grid.spacing;
-        float gridWidth = cellSize.x * level.columns + gridPadding;
-        float gridHeight = cellSize.y * level.rows + gridPadding;
+        float gridWidth = cellSize.x * level.columns + monsterGridPadding;
+        float gridHeight = cellSize.y * level.rows + monsterGridPadding;
         monsterPanel.sizeDelta = new Vector2(gridWidth, gridHeight);
 
         // reset the battle manager
-        battleManager.StartBattle();
+        attackManager.StartBattle();
     }
 }

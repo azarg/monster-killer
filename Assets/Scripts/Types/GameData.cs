@@ -10,6 +10,7 @@ public class GameData : ScriptableObject
     
     public int playerHealth;
     public int maxPlayerHealth;
+    public AttackBase currentAttack;
 
     private void OnEnable() {
         OnPlayerHealthChanged = null;

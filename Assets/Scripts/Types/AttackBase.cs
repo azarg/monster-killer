@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell
+public class AttackBase : MonoBehaviour
 {
-    public int row;
-    public int col;
-    public Cell(int row, int col) {
-        this.row = row;
-        this.col = col;
+    public virtual List<EnemyController> GetAttackedEnemies(EnemyController selectedEnemy, EnemyController[,] grid, Vector3 mousePosition) {
+        throw new System.NotImplementedException();
     }
-}
 
-public abstract class AttackBase
-{
-    public abstract List<EnemyController> GetAttackedEnemies(EnemyController enemy, EnemyController[,] enemies, Vector3 mousePosition);
+    protected bool EnemyExistsAt(int row, int col, EnemyController[,] grid) {
+        if (row < grid.GetLength(0) && row > -1 &&
+            col < grid.GetLength(1) && col > -1 &&
+            grid[row, col] != null) {
+            return true;
+        }
+
+        return false;
+    }
 }
