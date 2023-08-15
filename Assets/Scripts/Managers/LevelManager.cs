@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class LevelManager : MonoBehaviour
 {
     public Level[] levels;
-    public EnemyController[,] enemies;
+    public EnemyGrid enemyGrid;
+    //public EnemyController[,] enemies;
     public Level currentLevel;
     public static LevelManager Instance;
 
@@ -32,7 +33,10 @@ public class LevelManager : MonoBehaviour
         // add cells and enemies
         var level = levels[index];
         currentLevel = level;
-        enemies = new EnemyController[level.rows, level.columns];
+        //enemies = new EnemyController[level.rows, level.columns];
+        
+        enemyGrid.enemies = new EnemyController[level.rows, level.columns];
+
         var grid = monsterGrid.GetComponent<GridLayoutGroup>();
         for (int i = 0; i < level.rows; i++) {
             for (int j = 0; j < level.columns; j++) {
@@ -42,7 +46,9 @@ public class LevelManager : MonoBehaviour
                 var enemyController = enemyObj.GetComponent<EnemyController>();
                 enemyController.row = i;
                 enemyController.col = j;
-                enemies[i, j] = enemyController;
+                //enemies[i, j] = enemyController;
+
+                enemyGrid.enemies[i, j] = enemyController;
             }
         }
 

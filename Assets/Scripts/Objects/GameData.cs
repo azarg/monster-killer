@@ -16,6 +16,10 @@ public class GameData : ScriptableObject
         OnPlayerHealthChanged = null;
     }
 
+    public void SetCurrentAttack(AttackBase attack) {
+        currentAttack = attack;
+    }
+
     public void ResetPlayerHealth(int health, int maxHealth) {
         playerHealth = health;
         maxPlayerHealth = maxHealth;

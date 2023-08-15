@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerMoveHandler
 {
+    [SerializeField] EnemyGrid enemyGrid;
     [SerializeField] Image enemyImage;
     [SerializeField] Image highlightImage;
 
@@ -31,14 +32,14 @@ public class EnemyController : MonoBehaviour, IPointerClickHandler, IPointerExit
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        AttackManager.Instance.ApplyCurrentAttack(this, Input.mousePosition);
+        enemyGrid.ApplyCurrentAttack(this, Input.mousePosition);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        AttackManager.Instance.RemoveAttackHighlight();
+        enemyGrid.RemoveAttackHighlight();
     }
 
     public void OnPointerMove(PointerEventData eventData) {
-        AttackManager.Instance.HighlightAttackedEnemies(this, Input.mousePosition);
+        enemyGrid.HighlightAttackedEnemies(this, Input.mousePosition);
     }
 }
