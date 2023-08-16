@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackManager: {fileID: 11400000, guid: 825eb88e44a241e469b1d2c323f63b21, type: 2}
   enemyGrid: {fileID: 11400000, guid: cda5aa469fe579840ba22c7f5f086b23, type: 2}
-  highlightImage: {fileID: 1789121813570928475}
+  highlightImage: {fileID: 0}
   enemyType: {fileID: 0}
   row: 0
   col: 0

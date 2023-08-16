@@ -15,11 +15,13 @@ public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, I
     public int col;
 
     private Image enemyImage;
+    private float currentHealth;
 
     private void Awake() {
         highlightImage.gameObject.SetActive(false);
         enemyImage = gameObject.GetComponent<Image>();
         enemyImage.sprite = enemyType.sprite;
+        currentHealth = enemyType.startingHealth;
     }
 
     public void Highlight(AttackBase attack) {
@@ -38,6 +40,10 @@ public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, I
 
     public void ApplyDamage(float damage) {
         Debug.Log($"damaged enemy at {row},{col} for {damage}");
+        currentHealth -= damage;
+        if( currentHealth <= 0 ) {
+            Destroy(gameObject);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData) {

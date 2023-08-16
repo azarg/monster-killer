@@ -12,7 +12,7 @@ public class AttackManager : ScriptableObject
         var attack = gameData.currentAttack;
         if (attack == null) return;
 
-        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, enemyGrid.enemies, mousePosition);
+        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, mousePosition);
         foreach (Enemy enemy in attackedEnemies) {
             enemy.ApplyDamage(attack.GetDamage());
         }

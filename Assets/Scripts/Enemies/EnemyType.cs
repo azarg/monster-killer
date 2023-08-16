@@ -8,4 +8,5 @@ public class EnemyType : ScriptableObject
     public string displayName;
     public GameObject prefab;
     public Sprite sprite;
+    public float startingHealth;
 }
