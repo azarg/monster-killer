@@ -6,16 +6,20 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerMoveHandler
 {
+    [SerializeField] AttackManager attackManager;
     [SerializeField] EnemyGrid enemyGrid;
-    [SerializeField] Image enemyImage;
     [SerializeField] Image highlightImage;
     public EnemyType enemyType;
 
     public int row;
     public int col;
 
+    private Image enemyImage;
+
     private void Awake() {
         highlightImage.gameObject.SetActive(false);
+        enemyImage = gameObject.GetComponent<Image>();
+        enemyImage.sprite = enemyType.sprite;
     }
 
     public void Highlight(AttackBase attack) {
@@ -33,11 +37,11 @@ public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, I
     }
 
     public void ApplyDamage(float damage) {
-
+        Debug.Log($"damaged enemy at {row},{col} for {damage}");
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        enemyGrid.ApplyCurrentAttack(this, Input.mousePosition);
+        attackManager.ApplyCurrentAttack(this, Input.mousePosition);
     }
 
     public void OnPointerExit(PointerEventData eventData) {

@@ -161,11 +161,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1960636673031175577}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b6aaac4d58d15d4bbcbd4e71cef0312, type: 3}
+  m_Script: {fileID: 11500000, guid: fda153cc598f20349bc4b339feaaf327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackManager: {fileID: 11400000, guid: 825eb88e44a241e469b1d2c323f63b21, type: 2}
   enemyGrid: {fileID: 11400000, guid: cda5aa469fe579840ba22c7f5f086b23, type: 2}
-  enemyImage: {fileID: 2147794139257726116}
   highlightImage: {fileID: 1789121813570928475}
+  enemyType: {fileID: 0}
   row: 0
   col: 0

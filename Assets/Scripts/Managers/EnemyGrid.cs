@@ -30,14 +30,4 @@ public class EnemyGrid : ScriptableObject
             }
         }
     }
-
-    public void ApplyCurrentAttack(Enemy targetEnemy, Vector3 mousePosition) {
-        var attack = gameData.currentAttack;
-        if (attack == null) return;
-
-        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, enemies, mousePosition);
-        foreach (Enemy enemy in attackedEnemies) {
-            enemy.ApplyDamage(attack.GetDamage());
-        }
-    }
 }

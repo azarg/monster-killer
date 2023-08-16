@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21bfece570b3a734b8a9ecc1c3637318, type: 3}
-  m_Name: Enemy2
+  m_Script: {fileID: 11500000, guid: 998b0d69beb5ef144811d39553689137, type: 3}
+  m_Name: AttackManager
   m_EditorClassIdentifier: 
-  displayName: enemy 2
-  prefab: {fileID: 2570560809413710745, guid: a4671bc1dbfd5464388a925ffc89807b, type: 3}
-  sprite: {fileID: 21300000, guid: a676e7ae18399de4e916e52ddf0c5f38, type: 3}
+  enemyGrid: {fileID: 11400000, guid: cda5aa469fe579840ba22c7f5f086b23, type: 2}
+  gameData: {fileID: 11400000, guid: 83f93940229ec2c43a83b69d4b139bf1, type: 2}

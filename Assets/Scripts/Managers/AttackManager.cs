@@ -1,19 +1,20 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using UnityEngine;
 
-
-
-public class AttackManager : MonoBehaviour
+[CreateAssetMenu]
+public class AttackManager : ScriptableObject
 {
-    [SerializeField] LevelManager levelManager;
-    [SerializeField] GameData gameData;
-    [SerializeField] EnemyGrid enemyGrid;
+    public EnemyGrid enemyGrid;
+    public GameData gameData;
 
+    public void ApplyCurrentAttack(Enemy targetEnemy, Vector3 mousePosition) {
+        var attack = gameData.currentAttack;
+        if (attack == null) return;
 
-    public void StartBattle() {
-        gameData.ResetPlayerHealth(10, 10);
+        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, enemyGrid.enemies, mousePosition);
+        foreach (Enemy enemy in attackedEnemies) {
+            enemy.ApplyDamage(attack.GetDamage());
+        }
     }
 }
