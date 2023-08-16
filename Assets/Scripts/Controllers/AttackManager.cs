@@ -12,9 +12,11 @@ public class AttackManager : ScriptableObject
         var attack = gameData.currentAttack;
         if (attack == null) return;
 
-        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, mousePosition);
-        foreach (Enemy enemy in attackedEnemies) {
-            enemy.ApplyDamage(attack.GetDamage());
+        List<AttackedEnemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, mousePosition);
+        foreach (AttackedEnemy attackedEnemy in attackedEnemies) {
+            attackedEnemy.enemy.ApplyDamage(attack.GetDamage());
         }
+
+        enemyGrid.RemoveAttackHighlight();
     }
 }

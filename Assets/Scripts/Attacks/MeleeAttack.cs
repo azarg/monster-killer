@@ -11,13 +11,13 @@ public class MeleeAttack : AttackBase
         return damage;
     }
 
-    public override List<Enemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
+    public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
         var grid = enemyGrid.enemies;
         int row = enemy.row;
         int col = enemy.col;
-        var enemies = new List<Enemy>();
+        var enemies = new List<AttackedEnemy>();
         if (EnemyExistsAt(row, col)) {
-            enemies.Add(grid[row, col]);
+            enemies.Add(new AttackedEnemy() { enemy = grid[row, col], damage = this.damage });
         }
         return enemies;
     }

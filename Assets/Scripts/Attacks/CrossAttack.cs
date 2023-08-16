@@ -4,28 +4,34 @@ using UnityEngine;
 
 public class CrossAttack : AttackBase
 {
-    private float damage = 10f;
+    private float baseDamage = 10f;
 
     public override float GetDamage() {
-        return damage;
+        return baseDamage;
     }
 
-    public override List<Enemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
+    public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
 
         var grid = enemyGrid.enemies;
         int col = enemy.col;
         int row = enemy.row;
 
-        var enemies = new List<Enemy>();
+        var enemies = new List<AttackedEnemy>();
 
         for (int i = 0; i < grid.GetLength(0); i++) {
             if (EnemyExistsAt(i, col))
-                enemies.Add(grid[i, col]);
+                enemies.Add(new AttackedEnemy() { 
+                    enemy = grid[i, col], 
+                    damage = baseDamage 
+                });
         }
 
         for (int i = 0; i < grid.GetLength(1); i++) {
             if (EnemyExistsAt(row, i))
-                enemies.Add(grid[row, i]);
+                enemies.Add(new AttackedEnemy() { 
+                    enemy = grid[row, i], 
+                    damage = baseDamage 
+                });
         }
 
         return enemies;

@@ -5,65 +5,43 @@ using UnityEngine;
 public class ChainAttack : AttackBase
 {
     private EnemyType enemyType;
-    private List<Enemy> result;
-    private float damage = 10f;
+    private List<AttackedEnemy> attackedEnemies;
+    private float baseDamage = 10f;
+    private Enemy[,] grid;
 
     public override float GetDamage() {
-        return damage;
+        return baseDamage;
     }
 
+    public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
 
-    public override List<Enemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
-
-        result = new List<Enemy>();
+        attackedEnemies = new List<AttackedEnemy>();
         this.enemyType = enemy.enemyType;
+        this.grid = enemyGrid.enemies;
         AddEnemy(enemy);
-        return result;
+        return attackedEnemies;
     }
 
     private void AddEnemy(Enemy enemy) {
-
-        var grid = enemyGrid.enemies;
-
-        if (result.Contains(enemy)) {
-            return;
+        foreach(var attackedEnemy in attackedEnemies) {
+            if (attackedEnemy.enemy == enemy) return;
         }
         
-        result.Add(enemy);
+        attackedEnemies.Add(new AttackedEnemy() { enemy = enemy, damage = baseDamage });
 
-        int row, col;
-
-        row = enemy.row - 1; col = enemy.col - 1;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType) 
-                AddEnemy(grid[row, col]);
-
-        row = enemy.row - 1; col = enemy.col;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
-            AddEnemy(grid[row, col]);
-
-        row = enemy.row - 1; col = enemy.col + 1;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
-            AddEnemy(grid[row, col]);
-
-        row = enemy.row; col = enemy.col - 1;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
-            AddEnemy(grid[row, col]);
-
-        row = enemy.row; col = enemy.col + 1;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
-            AddEnemy(grid[row, col]);
-
-        row = enemy.row + 1; col = enemy.col - 1;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
-            AddEnemy(grid[row, col]);
-        
-        row = enemy.row + 1; col = enemy.col;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
-            AddEnemy(grid[row, col]);
-        
-        row = enemy.row + 1; col = enemy.col + 1;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
-            AddEnemy(grid[row, col]);
+        CheckAndAddEnemy(enemy.row - 1, enemy.col - 1, enemy);
+        CheckAndAddEnemy(enemy.row - 1, enemy.col, enemy);
+        CheckAndAddEnemy(enemy.row - 1, enemy.col + 1, enemy);
+        CheckAndAddEnemy(enemy.row, enemy.col - 1, enemy);
+        CheckAndAddEnemy(enemy.row, enemy.col + 1, enemy);
+        CheckAndAddEnemy(enemy.row + 1, enemy.col - 1, enemy);
+        CheckAndAddEnemy(enemy.row + 1, enemy.col, enemy);
+        CheckAndAddEnemy(enemy.row + 1, enemy.col + 1, enemy);
         return;
+    }
+
+    private void CheckAndAddEnemy(int row, int col, Enemy enemy) {
+        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
+            AddEnemy(grid[row, col]);
     }
 }

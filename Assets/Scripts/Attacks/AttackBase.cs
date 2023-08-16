@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class AttackedEnemy
+{
+    public Enemy enemy;
+    public float damage;
+}
+
 public class AttackBase : MonoBehaviour
 {
     protected EnemyGrid enemyGrid;
@@ -11,12 +17,12 @@ public class AttackBase : MonoBehaviour
         enemyGrid = GameManager.Instance.EnemyGrid;
     }
 
-    public virtual List<Enemy> GetAttackedEnemies(Enemy selectedEnemy, Vector3 mousePosition) {
-        throw new System.NotImplementedException();
+    public virtual List<AttackedEnemy> GetAttackedEnemies(Enemy selectedEnemy, Vector3 mousePosition) {
+        return new List<AttackedEnemy>();
     }
 
     public virtual float GetDamage() {
-        throw new System.NotImplementedException();
+        return 0;
     }
 
     protected bool EnemyExistsAt(int row, int col) {

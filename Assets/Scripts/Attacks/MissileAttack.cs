@@ -5,21 +5,26 @@ using UnityEngine;
 public class MissileAttack : AttackBase
 {
     private int attackDepth = 4;
-    private float damage = 10f;
+    private float baseDamage = 10f;
 
     public override float GetDamage() {
-        return damage;
+        return baseDamage;
     }
 
-    public override List<Enemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
+    public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
         var grid = enemyGrid.enemies;
         int row = enemy.row;
 
-        var enemies = new List<Enemy>();
+        var enemies = new List<AttackedEnemy>();
 
-        for (int i = 0; i < Mathf.Min(grid.GetLength(1), attackDepth); i++) {
-            if (EnemyExistsAt(row, i))
-                enemies.Add(grid[row, i]);
+        for (int i = enemy.col; i < Mathf.Min(grid.GetLength(1), enemy.col + attackDepth); i++) {
+            if (EnemyExistsAt(row, i)) {
+                var attackedEnemy = new AttackedEnemy {
+                    enemy = grid[row, i],
+                    damage = this.baseDamage / i
+                };
+                enemies.Add(attackedEnemy);
+            }
         }
 
         return enemies;

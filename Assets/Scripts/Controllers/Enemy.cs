@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, I
     [SerializeField] AttackManager attackManager;
     [SerializeField] EnemyGrid enemyGrid;
     [SerializeField] Image highlightImage;
+    [SerializeField] Image damageIndicator;
+    
     public EnemyType enemyType;
 
     public int row;
@@ -39,11 +41,11 @@ public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, I
     }
 
     public void ApplyDamage(float damage) {
-        Debug.Log($"damaged enemy at {row},{col} for {damage}");
         currentHealth -= damage;
         if( currentHealth <= 0 ) {
             Destroy(gameObject);
         }
+        damageIndicator.fillAmount = (enemyType.startingHealth - currentHealth)/enemyType.startingHealth;
     }
 
     public void OnPointerClick(PointerEventData eventData) {

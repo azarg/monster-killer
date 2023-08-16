@@ -12,16 +12,11 @@ public class EnemyGrid : ScriptableObject
         var attack = gameData.currentAttack;
         if (attack == null) return;
 
-        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, mousePosition);
-        foreach (var enemy in enemies) {
-            if (enemy != null) {
-                if (attackedEnemies.Contains(enemy)) {
-                    enemy.Highlight(attack);
-                }
-                else {
-                    enemy.RemoveHighlight();
-                }
-            }
+        RemoveAttackHighlight();
+
+        List<AttackedEnemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, mousePosition);
+        foreach(var attackedEnemy in attackedEnemies) {
+            attackedEnemy.enemy.Highlight(attack);
         }
     }
 
