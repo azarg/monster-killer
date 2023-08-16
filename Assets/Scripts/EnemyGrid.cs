@@ -6,13 +6,13 @@ using UnityEngine;
 public class EnemyGrid : ScriptableObject
 {
     [SerializeField] GameData gameData;
-    public EnemyController[,] enemies;
+    public Enemy[,] enemies;
 
-    public void HighlightAttackedEnemies(EnemyController enemyCtrl, Vector3 mousePosition) {
+    public void HighlightAttackedEnemies(Enemy targetEnemy, Vector3 mousePosition) {
         var attack = gameData.currentAttack;
         if (attack == null) return;
 
-        List<EnemyController> attackedEnemies = attack.GetAttackedEnemies(enemyCtrl, enemies, mousePosition);
+        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, enemies, mousePosition);
         foreach (var enemy in enemies) {
             if (attackedEnemies.Contains(enemy)) {
                 enemy.Highlight(attack);
@@ -31,15 +31,13 @@ public class EnemyGrid : ScriptableObject
         }
     }
 
-    public void ApplyCurrentAttack(EnemyController enemyCtrl, Vector3 mousePosition) {
+    public void ApplyCurrentAttack(Enemy targetEnemy, Vector3 mousePosition) {
         var attack = gameData.currentAttack;
         if (attack == null) return;
 
-        List<EnemyController> attackedEnemies = attack.GetAttackedEnemies(enemyCtrl, enemies, mousePosition);
-        foreach (EnemyController enemy in attackedEnemies) {
-            if (enemy != null) {
-                Debug.Log($"row={enemy.row}, col={enemy.col}");
-            }
+        List<Enemy> attackedEnemies = attack.GetAttackedEnemies(targetEnemy, enemies, mousePosition);
+        foreach (Enemy enemy in attackedEnemies) {
+            enemy.ApplyDamage(attack.GetDamage());
         }
     }
 }

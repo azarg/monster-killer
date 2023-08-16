@@ -7,7 +7,6 @@ public class LevelManager : MonoBehaviour
 {
     public Level[] levels;
     public EnemyGrid enemyGrid;
-    //public EnemyController[,] enemies;
     public Level currentLevel;
     public static LevelManager Instance;
 
@@ -33,22 +32,20 @@ public class LevelManager : MonoBehaviour
         // add cells and enemies
         var level = levels[index];
         currentLevel = level;
-        //enemies = new EnemyController[level.rows, level.columns];
         
-        enemyGrid.enemies = new EnemyController[level.rows, level.columns];
+        enemyGrid.enemies = new Enemy[level.rows, level.columns];
 
         var grid = monsterGrid.GetComponent<GridLayoutGroup>();
         for (int i = 0; i < level.rows; i++) {
             for (int j = 0; j < level.columns; j++) {
                 var cell = Instantiate(gridCellPrefab, grid.transform);
-                var enemy = level.enemies[Random.Range(0, level.enemies.Length)];
-                var enemyObj = Instantiate(enemy.prefab, cell.transform);
-                var enemyController = enemyObj.GetComponent<EnemyController>();
-                enemyController.row = i;
-                enemyController.col = j;
-                //enemies[i, j] = enemyController;
+                var enemyType = level.enemies[Random.Range(0, level.enemies.Length)];
+                var enemyGameObject = Instantiate(enemyType.prefab, cell.transform);
+                var enemy = enemyGameObject.GetComponent<Enemy>();
+                enemy.row = i;
+                enemy.col = j;
 
-                enemyGrid.enemies[i, j] = enemyController;
+                enemyGrid.enemies[i, j] = enemy;
             }
         }
 

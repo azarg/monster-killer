@@ -8,5 +8,5 @@ public class Level : ScriptableObject
     public int id;
     public int rows;
     public int columns;
-    public Enemy[] enemies;
+    public EnemyType[] enemies;
 }

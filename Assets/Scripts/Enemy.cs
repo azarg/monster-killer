@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EnemyController : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerMoveHandler
+public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerMoveHandler
 {
     [SerializeField] EnemyGrid enemyGrid;
     [SerializeField] Image enemyImage;
     [SerializeField] Image highlightImage;
+    public EnemyType enemyType;
 
     public int row;
     public int col;
@@ -31,6 +32,10 @@ public class EnemyController : MonoBehaviour, IPointerClickHandler, IPointerExit
         enemyImage.color = color;
     }
 
+    public void ApplyDamage(float damage) {
+
+    }
+
     public void OnPointerClick(PointerEventData eventData) {
         enemyGrid.ApplyCurrentAttack(this, Input.mousePosition);
     }
@@ -42,4 +47,6 @@ public class EnemyController : MonoBehaviour, IPointerClickHandler, IPointerExit
     public void OnPointerMove(PointerEventData eventData) {
         enemyGrid.HighlightAttackedEnemies(this, Input.mousePosition);
     }
+
+
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class FrostAttack : AttackBase
 {
-    public override List<EnemyController> GetAttackedEnemies(EnemyController enemy, EnemyController[,] grid, Vector3 mousePosition) {
+    public override List<Enemy> GetAttackedEnemies(Enemy enemy, Enemy[,] grid, Vector3 mousePosition) {
         int col = enemy.col;
 
-        var enemies = new List<EnemyController>();
+        var enemies = new List<Enemy>();
 
         for (int i = 0; i < grid.GetLength(0); i++) {
             if (EnemyExistsAt(i, col, grid))

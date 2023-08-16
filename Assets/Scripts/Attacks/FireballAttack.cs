@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class FireballAttack : AttackBase
 {
-    public override List<EnemyController> GetAttackedEnemies(EnemyController enemy, EnemyController[,] grid, Vector3 mousePosition) {
+    public override List<Enemy> GetAttackedEnemies(Enemy enemy, Enemy[,] grid, Vector3 mousePosition) {
         int row = enemy.row;
         int col = enemy.col;
 
         var colDirection = (int) Mathf.Sign(mousePosition.x - enemy.transform.position.x);
         var rowDirection = (int) Mathf.Sign(enemy.transform.position.y - mousePosition.y);
 
-        var enemies = new List<EnemyController>();
+        var enemies = new List<Enemy>();
 
         if (EnemyExistsAt(row, col, grid))
             enemies.Add(grid[row, col]);
