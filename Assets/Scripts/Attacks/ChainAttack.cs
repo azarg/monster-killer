@@ -17,7 +17,7 @@ public class ChainAttack : AttackBase
 
         attackedEnemies = new List<AttackedEnemy>();
         this.enemyType = enemy.enemyType;
-        this.grid = enemyGrid.enemies;
+        this.grid = gameData.enemies;
         AddEnemy(enemy);
         return attackedEnemies;
     }

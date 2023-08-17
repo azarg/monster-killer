@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, IPointerMoveHandler
+public class Enemy : MonoBehaviour
 {
-    [SerializeField] AttackManager attackManager;
-    [SerializeField] EnemyGrid enemyGrid;
+    [SerializeField] GameData gameData;
     [SerializeField] Image highlightImage;
     [SerializeField] Image damageIndicator;
     
@@ -18,6 +17,9 @@ public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, I
 
     private Image enemyImage;
     private float currentHealth;
+    private float defaultAttackWaitTime = 0.2f;
+    private float defaultDamageTaken = 1f;
+    private float defaultDamageCaused = 1f;
 
     private void Awake() {
         highlightImage.gameObject.SetActive(false);
@@ -44,21 +46,21 @@ public class Enemy : MonoBehaviour, IPointerClickHandler, IPointerExitHandler, I
         currentHealth -= damage;
         if( currentHealth <= 0 ) {
             Destroy(gameObject);
+            return;
         }
         damageIndicator.fillAmount = (enemyType.startingHealth - currentHealth)/enemyType.startingHealth;
     }
 
-    public void OnPointerClick(PointerEventData eventData) {
-        attackManager.ApplyCurrentAttack(this, Input.mousePosition);
+    public void Fight() {
+        InvokeRepeating(nameof(PerformSingleDefaultAttack), 0, defaultAttackWaitTime);
     }
 
-    public void OnPointerExit(PointerEventData eventData) {
-        enemyGrid.RemoveAttackHighlight();
+    private void PerformSingleDefaultAttack() {
+        ApplyDamage(defaultDamageTaken);
     }
 
-    public void OnPointerMove(PointerEventData eventData) {
-        enemyGrid.HighlightAttackedEnemies(this, Input.mousePosition);
+    public float GetPotentialDamage() {
+        float potentialDamage = enemyType.maxDamage * (currentHealth / enemyType.startingHealth);
+        return potentialDamage;
     }
-
-
 }

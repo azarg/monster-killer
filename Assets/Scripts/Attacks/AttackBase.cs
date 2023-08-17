@@ -11,10 +11,10 @@ public class AttackedEnemy
 
 public class AttackBase : MonoBehaviour
 {
-    protected EnemyGrid enemyGrid;
+    protected GameData gameData;
 
     private void Start() {
-        enemyGrid = GameManager.Instance.EnemyGrid;
+        gameData = GameManager.Instance.gameData;
     }
 
     public virtual List<AttackedEnemy> GetAttackedEnemies(Enemy selectedEnemy, Vector3 mousePosition) {
@@ -26,7 +26,7 @@ public class AttackBase : MonoBehaviour
     }
 
     protected bool EnemyExistsAt(int row, int col) {
-        var grid = enemyGrid.enemies;
+        var grid = gameData.enemies;
         if (row < grid.GetLength(0) && row > -1 &&
             col < grid.GetLength(1) && col > -1 &&
             grid[row, col] != null) {

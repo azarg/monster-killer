@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 
 public class LevelSelector : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] LevelManager levelManager;
     [SerializeField] Level level;
 
     public void OnPointerClick(PointerEventData eventData) {
-        LevelManager.Instance.StartLevel(level);
+        levelManager.StartLevel(level);
     }
 }

@@ -12,7 +12,7 @@ public class CrossAttack : AttackBase
 
     public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
 
-        var grid = enemyGrid.enemies;
+        var grid = gameData.enemies;
         int col = enemy.col;
         int row = enemy.row;
 

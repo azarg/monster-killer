@@ -7,17 +7,23 @@ using UnityEngine;
 public class GameData : ScriptableObject
 {
     public event Action OnPlayerHealthChanged;
-    
+    public event Action OnPotentialDamageToPlayerChanged;
+
+    public Enemy[,] enemies;
+
     public int playerHealth;
     public int maxPlayerHealth;
-    public AttackBase currentAttack;
+    public float potentialDamageToPlayer;
 
     private void OnEnable() {
+        playerHealth = maxPlayerHealth;
         OnPlayerHealthChanged = null;
+        OnPotentialDamageToPlayerChanged = null;
     }
 
-    public void SetCurrentAttack(AttackBase attack) {
-        currentAttack = attack;
+    public void SetPotentialDamageToPlayer(float potentialDamage) {
+        potentialDamageToPlayer = potentialDamage;
+        OnPotentialDamageToPlayerChanged?.Invoke();
     }
 
     public void ResetPlayerHealth(int health, int maxHealth) {

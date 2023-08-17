@@ -9,4 +9,5 @@ public class EnemyType : ScriptableObject
     public GameObject prefab;
     public Sprite sprite;
     public float startingHealth;
+    public float maxDamage;
 }

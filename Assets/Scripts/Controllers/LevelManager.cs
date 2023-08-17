@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    public static LevelManager Instance;
-    public EnemyGrid enemyGrid;
+    private GameData gameData;
 
     [SerializeField] RectTransform monsterPanel;
 
@@ -15,8 +14,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] float monsterGridPadding = 20f;
     [SerializeField] GameObject gridCellPrefab;
 
-    private void Awake() {
-        Instance = this;
+    private void Start() {
+        gameData = GameManager.Instance.gameData;
     }
 
     public void StartLevel(Level level) {
@@ -26,7 +25,7 @@ public class LevelManager : MonoBehaviour
         }
         
         // add cells and enemies
-        enemyGrid.enemies = new Enemy[level.rows, level.columns];
+        gameData.enemies = new Enemy[level.rows, level.columns];
 
         var grid = monsterGrid.GetComponent<GridLayoutGroup>();
         for (int i = 0; i < level.rows; i++) {
@@ -38,7 +37,7 @@ public class LevelManager : MonoBehaviour
                 enemy.row = i;
                 enemy.col = j;
 
-                enemyGrid.enemies[i, j] = enemy;
+                gameData.enemies[i, j] = enemy;
             }
         }
 

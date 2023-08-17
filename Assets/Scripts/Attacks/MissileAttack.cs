@@ -12,7 +12,7 @@ public class MissileAttack : AttackBase
     }
 
     public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
-        var grid = enemyGrid.enemies;
+        var grid = gameData.enemies;
         int row = enemy.row;
 
         var enemies = new List<AttackedEnemy>();

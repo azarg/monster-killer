@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda153cc598f20349bc4b339feaaf327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameData: {fileID: 11400000, guid: 83f93940229ec2c43a83b69d4b139bf1, type: 2}
   attackManager: {fileID: 11400000, guid: 825eb88e44a241e469b1d2c323f63b21, type: 2}
   enemyGrid: {fileID: 11400000, guid: cda5aa469fe579840ba22c7f5f086b23, type: 2}
   highlightImage: {fileID: 0}
