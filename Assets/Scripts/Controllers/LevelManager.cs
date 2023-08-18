@@ -8,6 +8,9 @@ public class LevelManager : MonoBehaviour
     private GameData gameData;
 
     [SerializeField] RectTransform monsterPanel;
+    [SerializeField] RectTransform attackPanel;
+    [SerializeField] RectTransform attackPanel_defaul_position;
+    [SerializeField] RectTransform attackPanel_battle_position;
 
     [Header("Monster grid")]
     [SerializeField] GameObject monsterGrid;
@@ -19,6 +22,7 @@ public class LevelManager : MonoBehaviour
     }
 
     public void StartLevel(Level level) {
+        attackPanel.SetParent(attackPanel_battle_position, worldPositionStays: false);
 
         gameData.SetPlayerHealth(gameData.maxPlayerHealth);
 

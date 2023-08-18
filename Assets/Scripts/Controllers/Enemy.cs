@@ -17,9 +17,7 @@ public class Enemy : MonoBehaviour
 
     private Image enemyImage;
     public float currentHealth;
-    private float defaultAttackWaitTime = 0.2f;
-    private float defaultDamageTaken = 1f;
-    private float defaultDamageCaused = 1f;
+
     private bool isFighting = false;
     private bool isTakingTurn = false;
     private float dpsBeforeFight;

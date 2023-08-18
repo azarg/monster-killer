@@ -7,7 +7,6 @@ using UnityEngine;
 public class GameData : ScriptableObject
 {
     public event Action OnPlayerHealthChanged;
-    public event Action OnEstimatedHealthChanged;
 
     public Enemy[,] enemies;
 
@@ -20,17 +19,16 @@ public class GameData : ScriptableObject
         OnPlayerHealthChanged = null;
     }
 
-
     public void SetPlayerHealth(float amount) {
         playerHealth = amount;
         OnPlayerHealthChanged?.Invoke();
 
     }
+
     public void ChangePlayerHealth(float amount) {
         playerHealth += amount;
         OnPlayerHealthChanged?.Invoke();
     }
-
 
     public float GetDPS() {
         return 1f;
