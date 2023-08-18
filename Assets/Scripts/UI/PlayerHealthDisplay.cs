@@ -13,6 +13,6 @@ public class PlayerHealthDisplay : MonoBehaviour
     }
 
     private void OnPlayerHealthChanged() {
-        playerHealth.text = $"{gameData.playerHealth}/{gameData.maxPlayerHealth}";
+        playerHealth.text = $"{(int)gameData.playerHealth}/{gameData.maxPlayerHealth}";
     }
 }

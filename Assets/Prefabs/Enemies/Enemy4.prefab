@@ -16,10 +16,6 @@ PrefabInstance:
       propertyPath: enemyType
       value: 
       objectReference: {fileID: 11400000, guid: f964ced0e8b98d2469e8689a73630102, type: 2}
-    - target: {fileID: -2725422603477985810, guid: 541053e3a6d002644ab95c6d4d672491, type: 3}
-      propertyPath: highlightImage
-      value: 
-      objectReference: {fileID: 2327761817248026971}
     - target: {fileID: 1960636673031175577, guid: 541053e3a6d002644ab95c6d4d672491, type: 3}
       propertyPath: m_Name
       value: Enemy4
@@ -113,14 +109,3 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 541053e3a6d002644ab95c6d4d672491, type: 3}
---- !u!114 &2327761817248026971 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1789121813570928475, guid: 541053e3a6d002644ab95c6d4d672491, type: 3}
-  m_PrefabInstance: {fileID: 4078541373933186560}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

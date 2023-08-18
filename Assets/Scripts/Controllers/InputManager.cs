@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
     PointerEventData pointerEventData;
     EventSystem eventSystem;
 
-    private bool isAttackHighlighted;
+    private bool overEnemy;
 
     private void Start() {
         raycaster = GetComponent<GraphicRaycaster>();
@@ -25,34 +25,43 @@ public class InputManager : MonoBehaviour
             battleManager.DeselectAttack();
             return;
         }
-        
+
         bool click = Input.GetMouseButtonDown(0);
-        isAttackHighlighted = false;
+        overEnemy = false;
 
         pointerEventData = new PointerEventData(eventSystem);
         pointerEventData.position = Input.mousePosition;
         var results = new List<RaycastResult>();
         raycaster.Raycast(pointerEventData, results);
         foreach (var result in results) {
+            // if over an attack and clicked
             if (click && result.gameObject.TryGetComponent(out AttackBase attack)) {
                 battleManager.SelectAttack(attack);
                 return;
             }
+
+            // if over an enemy
             if (result.gameObject.TryGetComponent(out Enemy enemy)) {
-                if (click) {
-                    battleManager.ApplyCurrentAttack(enemy, Input.mousePosition);
-                }
+                overEnemy = true;
                 if (battleManager.IsAttackSelected()) {
+                    battleManager.HideEstimatedHealth();
                     battleManager.HighlightAttackedEnemies(enemy, Input.mousePosition);
-                    isAttackHighlighted = true;
+                    if (click) {
+                        battleManager.ApplyCurrentAttack(enemy, Input.mousePosition);
+                    }
                 }
                 else {
-                    float potentialDamage = enemy.GetPotentialDamage();
-                    GameManager.Instance.gameData.SetPotentialDamageToPlayer(potentialDamage);
+                    battleManager.DisplayEstimatedPlayerHealthAfterFight(enemy);
+                    if (click) {
+                        battleManager.Fight(enemy);
+                    }
                 }
                 return;
             }
         }
-        if (!isAttackHighlighted) battleManager.RemoveAttackHighlight();
+        if (!overEnemy) {
+            battleManager.RemoveAttackHighlight();
+            battleManager.HideEstimatedHealth();
+        }
     }
 }

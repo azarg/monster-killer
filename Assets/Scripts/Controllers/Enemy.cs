@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] GameData gameData;
     [SerializeField] Image highlightImage;
-    [SerializeField] Image damageIndicator;
+    [SerializeField] Image healthIndicator;
     
     public EnemyType enemyType;
 
@@ -16,16 +16,40 @@ public class Enemy : MonoBehaviour
     public int col;
 
     private Image enemyImage;
-    private float currentHealth;
+    public float currentHealth;
     private float defaultAttackWaitTime = 0.2f;
     private float defaultDamageTaken = 1f;
     private float defaultDamageCaused = 1f;
+    private bool isFighting = false;
+    private bool isTakingTurn = false;
+    private float dpsBeforeFight;
+    private float turnDelay = 0.1f;
 
     private void Awake() {
         highlightImage.gameObject.SetActive(false);
         enemyImage = gameObject.GetComponent<Image>();
         enemyImage.sprite = enemyType.sprite;
         currentHealth = enemyType.startingHealth;
+    }
+
+    private void Update() {
+        if(isFighting) {
+            if(isTakingTurn == false)
+                StartCoroutine(nameof(TakeTurn));
+        }
+    }
+
+    IEnumerator TakeTurn() {
+        isTakingTurn = true;
+        gameData.ChangePlayerHealth(-dpsBeforeFight);
+        this.Hurt(gameData.GetDPS());
+
+        if(gameData.playerHealth <= 0 || currentHealth <= 0) {
+            isFighting = false;
+        }
+
+        yield return new WaitForSeconds(turnDelay);
+        isTakingTurn = false;
     }
 
     public void Highlight(AttackBase attack) {
@@ -42,25 +66,28 @@ public class Enemy : MonoBehaviour
         enemyImage.color = color;
     }
 
-    public void ApplyDamage(float damage) {
+    public void Hurt(float damage) {
         currentHealth -= damage;
-        if( currentHealth <= 0 ) {
+        if (currentHealth <= 0) {
             Destroy(gameObject);
             return;
         }
-        damageIndicator.fillAmount = (enemyType.startingHealth - currentHealth)/enemyType.startingHealth;
+        healthIndicator.fillAmount = (enemyType.startingHealth - currentHealth)/enemyType.startingHealth;
+    }
+
+    public float GetDPS() {
+        float dps = enemyType.maxDPS * (currentHealth / enemyType.startingHealth);
+        return dps;
+    }
+
+    public bool IsAttacking() {
+        // TODO: implement
+        return false;
     }
 
     public void Fight() {
-        InvokeRepeating(nameof(PerformSingleDefaultAttack), 0, defaultAttackWaitTime);
-    }
-
-    private void PerformSingleDefaultAttack() {
-        ApplyDamage(defaultDamageTaken);
-    }
-
-    public float GetPotentialDamage() {
-        float potentialDamage = enemyType.maxDamage * (currentHealth / enemyType.startingHealth);
-        return potentialDamage;
+        isFighting = true;
+        dpsBeforeFight = GetDPS();
     }
 }
+

@@ -16,4 +16,4 @@ MonoBehaviour:
   prefab: {fileID: 2570560809413710745, guid: a4671bc1dbfd5464388a925ffc89807b, type: 3}
   sprite: {fileID: 21300000, guid: a676e7ae18399de4e916e52ddf0c5f38, type: 3}
   startingHealth: 20
-  maxDamage: 3
+  maxDPS: 2

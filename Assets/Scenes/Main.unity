@@ -306,8 +306,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204866134}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 569.0369, y: 417.1078, z: -4.6708493}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1118,9 +1118,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 636075001}
-  - component: {fileID: 636075002}
   m_Layer: 5
-  m_Name: PotentialDamage
+  m_Name: EstimatedHealth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1146,20 +1145,6 @@ RectTransform:
   m_AnchoredPosition: {x: 144.1658, y: -14.9229}
   m_SizeDelta: {x: 211.3784, y: 29.8458}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &636075002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636075000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c8a6573691a53f4db4fff98d1532f24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  potentialDamage: {fileID: 386241273}
-  gameData: {fileID: 11400000, guid: 83f93940229ec2c43a83b69d4b139bf1, type: 2}
 --- !u!1 &751592805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,7 +1571,7 @@ GameObject:
   - component: {fileID: 993284437}
   - component: {fileID: 993284438}
   m_Layer: 5
-  m_Name: TestButtons
+  m_Name: Levels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1912,7 +1897,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b3e298a74085b24484e30b68ff35b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  estimatedPlayerHealthDisplay: {fileID: 386241273}
   gameData: {fileID: 11400000, guid: 83f93940229ec2c43a83b69d4b139bf1, type: 2}
+  player: {fileID: 235084161}
 --- !u!1 &1251989020
 GameObject:
   m_ObjectHideFlags: 0
@@ -2247,8 +2234,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375267050}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -34.710876, y: -140.78217, z: 2.2131822}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2358,13 +2345,13 @@ Transform:
   m_GameObject: {fileID: 1536782800}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 569.0369, y: 417.1078, z: -4.6708493}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1375267052}
-  - {fileID: 235084160}
   - {fileID: 1228250004}
+  - {fileID: 235084160}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1555486749
@@ -2986,7 +2973,7 @@ GameObject:
   - component: {fileID: 1805708018}
   - component: {fileID: 1805708020}
   m_Layer: 5
-  m_Name: PlayLevel3 (1)
+  m_Name: PlayLevel4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

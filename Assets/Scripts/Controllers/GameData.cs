@@ -7,38 +7,32 @@ using UnityEngine;
 public class GameData : ScriptableObject
 {
     public event Action OnPlayerHealthChanged;
-    public event Action OnPotentialDamageToPlayerChanged;
+    public event Action OnEstimatedHealthChanged;
 
     public Enemy[,] enemies;
 
-    public int playerHealth;
-    public int maxPlayerHealth;
-    public float potentialDamageToPlayer;
+    public float playerHealth;
+    public float maxPlayerHealth;
+    public float estimatedPlayerHealthAfterFight;
 
     private void OnEnable() {
         playerHealth = maxPlayerHealth;
         OnPlayerHealthChanged = null;
-        OnPotentialDamageToPlayerChanged = null;
     }
 
-    public void SetPotentialDamageToPlayer(float potentialDamage) {
-        potentialDamageToPlayer = potentialDamage;
-        OnPotentialDamageToPlayerChanged?.Invoke();
-    }
 
-    public void ResetPlayerHealth(int health, int maxHealth) {
-        playerHealth = health;
-        maxPlayerHealth = maxHealth;
+    public void SetPlayerHealth(float amount) {
+        playerHealth = amount;
         OnPlayerHealthChanged?.Invoke();
-    }
 
-    public void ChangePlayerHealth(int amount) {
+    }
+    public void ChangePlayerHealth(float amount) {
         playerHealth += amount;
         OnPlayerHealthChanged?.Invoke();
     }
 
-    public void ChangeMaxPlayerHealth(int amount) {
-        maxPlayerHealth += amount;
-        OnPlayerHealthChanged?.Invoke();
+
+    public float GetDPS() {
+        return 1f;
     }
 }

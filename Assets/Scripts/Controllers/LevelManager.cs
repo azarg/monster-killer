@@ -19,6 +19,9 @@ public class LevelManager : MonoBehaviour
     }
 
     public void StartLevel(Level level) {
+
+        gameData.SetPlayerHealth(gameData.maxPlayerHealth);
+
         // clear the grid
         foreach (Transform child in monsterGrid.transform) {
             Destroy(child.gameObject);

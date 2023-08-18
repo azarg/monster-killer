@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Level4
   m_EditorClassIdentifier: 
   id: 4
-  rows: 1
-  columns: 1
+  rows: 6
+  columns: 6
   enemies:
-  - {fileID: 11400000, guid: b07bd9ddee109624782038571dc2dd77, type: 2}
+  - {fileID: 11400000, guid: 337f732dd243bc947a16863d4ed8a535, type: 2}
+  - {fileID: 11400000, guid: f964ced0e8b98d2469e8689a73630102, type: 2}
+  - {fileID: 11400000, guid: de4c9438d0563d64fa3e9376c3449eb1, type: 2}

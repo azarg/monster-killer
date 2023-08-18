@@ -166,13 +166,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: 83f93940229ec2c43a83b69d4b139bf1, type: 2}
-  attackManager: {fileID: 11400000, guid: 825eb88e44a241e469b1d2c323f63b21, type: 2}
-  enemyGrid: {fileID: 11400000, guid: cda5aa469fe579840ba22c7f5f086b23, type: 2}
-  highlightImage: {fileID: 0}
-  damageIndicator: {fileID: 8940521710818893876}
+  highlightImage: {fileID: 1789121813570928475}
+  healthIndicator: {fileID: 8940521710818893876}
   enemyType: {fileID: 0}
   row: 0
   col: 0
+  currentHealth: 0
 --- !u!1 &6359432858676331138
 GameObject:
   m_ObjectHideFlags: 0
