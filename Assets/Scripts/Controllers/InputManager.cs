@@ -48,6 +48,11 @@ public class InputManager : MonoBehaviour
                         break;
                     }
                 }
+                if (result.gameObject.TryGetComponent(out RecyclebinManager rm)) {
+                    Destroy(carryingItem.gameObject);
+                    carryingItem = null;
+                    break;
+                }
             }
             else {
                 if (result.gameObject.TryGetComponent(out Level level)) {

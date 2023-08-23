@@ -4,6 +4,7 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class Item : MonoBehaviour
         if (newContainer.item == null) {
             if (newContainer.acceptedItemClass == ItemClass.all ||
                 newContainer.acceptedItemClass == this.itemType.itemClass) {
-                
+
                 newContainer.PutItem(this);
                 isGrabbed = false;
                 return true;

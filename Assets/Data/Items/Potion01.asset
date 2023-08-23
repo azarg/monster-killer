@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 101825ecced922a4192b402c92da7ed5, type: 3}
-  m_Name: Sword
+  m_Name: Potion01
   m_EditorClassIdentifier: 
-  itemName: Iron sword
-  sprite: {fileID: 21300000, guid: dec9cb5384387fa4fb33d801eb33d9a1, type: 3}
-  itemClass: 0
+  itemName: Small potion
+  sprite: {fileID: 21300000, guid: c03374dc06350404189b3786200743b5, type: 3}
+  itemClass: 2

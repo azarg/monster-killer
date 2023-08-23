@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum ItemClass { none, all, potion }
+public enum ItemClass { none, all, potion, axe, spear, sword, shield, helmet, ring, armor }
 
 [CreateAssetMenu]
 public class ItemType : ScriptableObject
