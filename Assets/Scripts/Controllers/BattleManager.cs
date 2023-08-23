@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class BattleManager : MonoBehaviour 
 {
     [SerializeField] Text estimatedPlayerHealthDisplay;
-
-    public GameData gameData;
+    public GameManager gameManager;
     public Player player;
 
     private AttackBase currentAttack;
 
     private void OnEnable() {
         Enemy.OnEnemyDied += Enemy_OnEnemyDied;
+        gameManager = GameManager.Instance;
     }
 
     private void OnDisable() {
@@ -49,7 +49,7 @@ public class BattleManager : MonoBehaviour
     }
 
     public void RemoveAttackHighlight() {
-        foreach (var enemy in gameData.enemies) {
+        foreach (var enemy in gameManager.enemies) {
             enemy.RemoveHighlight();
         }
     }
@@ -73,7 +73,7 @@ public class BattleManager : MonoBehaviour
 
 
     public void DisplayEstimatedPlayerHealthAfterFight(Enemy attackedEnemy) {
-        if (gameData.playerHealth <= 0) return;
+        if (gameManager.playerHealth <= 0) return;
 
         float enemyDPS = 0;
 
@@ -81,7 +81,7 @@ public class BattleManager : MonoBehaviour
         enemyDPS += attackedEnemy.GetDPS();
 
         // also need to add dps by other attacking enemies
-        foreach (var enemy in gameData.enemies) {
+        foreach (var enemy in gameManager.enemies) {
             if (enemy != attackedEnemy) {
                 if (enemy.IsAttacking()) {
                     enemyDPS += enemy.GetDPS();
@@ -105,10 +105,10 @@ public class BattleManager : MonoBehaviour
     
     public void Fight(Enemy attackedEnemy) {
         
-        if (gameData.playerHealth <= 0) return;
+        if (gameManager.playerHealth <= 0) return;
 
         attackedEnemy.Fight();
-        foreach (var enemy in gameData.enemies) {
+        foreach (var enemy in gameManager.enemies) {
             if (enemy != attackedEnemy) {
                 if (enemy.IsAttacking()) {
                     enemy.Fight();

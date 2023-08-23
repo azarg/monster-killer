@@ -7,7 +7,6 @@ public class ChainAttack : AttackBase
     private EnemyType enemyType;
     private List<AttackedEnemy> attackedEnemies;
     private float baseDamage = 10f;
-    private Enemy[,] grid;
 
     public override float GetDamage() {
         return baseDamage;
@@ -17,7 +16,6 @@ public class ChainAttack : AttackBase
 
         attackedEnemies = new List<AttackedEnemy>();
         this.enemyType = enemy.enemyType;
-        this.grid = gameData.grid;
         AddEnemy(enemy);
         return attackedEnemies;
     }
@@ -41,6 +39,7 @@ public class ChainAttack : AttackBase
     }
 
     private void CheckAndAddEnemy(int row, int col, Enemy enemy) {
+        var grid = gameManager.grid;
         if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
             AddEnemy(grid[row, col]);
     }

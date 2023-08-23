@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb07e191c2d58ee4e8e9d8c58eb72404, type: 3}
-  m_Name: GameData
+  m_Script: {fileID: 11500000, guid: 101825ecced922a4192b402c92da7ed5, type: 3}
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  playerHealth: 50
-  maxPlayerHealth: 50
-  currentAttack: {fileID: 0}
-  potentialDamageToPlayer: 0
+  itemName: Iron sword
+  sprite: {fileID: 21300000, guid: dec9cb5384387fa4fb33d801eb33d9a1, type: 3}
+  itemClass: 0

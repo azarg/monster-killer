@@ -11,7 +11,7 @@ public class FireballAttack : AttackBase
     }
 
     public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
-        var grid = gameData.grid;
+        var grid = gameManager.grid;
         int row = enemy.row;
         int col = enemy.col;
 

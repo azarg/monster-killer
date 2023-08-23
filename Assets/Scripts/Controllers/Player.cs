@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] GameData gameData;
+    private GameManager gameManager;
 
+    private void OnEnable() {
+        gameManager = GameManager.Instance;
+    }
     public float GetHPS(float hit) {
         // TODO: incorporate player stats
         return hit;
@@ -16,10 +19,10 @@ public class Player : MonoBehaviour
     }
 
     public float GetHealth() {
-        return gameData.playerHealth;
+        return gameManager.playerHealth;
     }
 
     public void Hurt(float damage) {
-        gameData.playerHealth -= damage;
+        gameManager.playerHealth -= damage;
     }
 }

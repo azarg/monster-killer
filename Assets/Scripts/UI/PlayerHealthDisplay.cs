@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class PlayerHealthDisplay : MonoBehaviour
 {
     [SerializeField] Text playerHealth;
-    [SerializeField] GameData gameData;
+    private GameManager gameManager;
 
     private void Start() {
-        gameData.OnPlayerHealthChanged += OnPlayerHealthChanged;
+        gameManager = GameManager.Instance;
+        gameManager.OnPlayerHealthChanged += OnPlayerHealthChanged;
     }
 
     private void OnPlayerHealthChanged() {
-        playerHealth.text = $"{(int)gameData.playerHealth}/{gameData.maxPlayerHealth}";
+        playerHealth.text = $"{(int)gameManager.playerHealth}/{gameManager.maxPlayerHealth}";
     }
 }

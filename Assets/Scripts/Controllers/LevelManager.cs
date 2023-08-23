@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    private GameData gameData;
+    private GameManager gameManager;
 
     [SerializeField] Level[] sequencedLevels;
 
@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour
     private Level currentLevel;
 
     private void Start() {
-        gameData = GameManager.Instance.gameData;
+        gameManager = GameManager.Instance;
         UpdateLevelDisplay();
     }
 
@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
         Enemy.OnEnemyDied -= Enemy_OnEnemyDied;
     }
     private void Enemy_OnEnemyDied() {
-        if (gameData.enemyCount <= 0) {
+        if (gameManager.enemies.Count <= 0) {
             currentLevel.isCompleted = true;
             UpdateLevelDisplay();
             GameManager.Instance.ChangeGameState(GameState.Default);
@@ -74,15 +74,15 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.ChangeGameState(GameState.InBattle);
         
         // TODO: this is temporary. player health should depend on stats
-        gameData.SetPlayerHealth(gameData.maxPlayerHealth);
+        gameManager.SetPlayerHealth(gameManager.maxPlayerHealth);
 
         // clear the grid
         foreach (Transform child in monsterGrid.transform) {
             Destroy(child.gameObject);
         }
-        
+
         // add cells and enemies
-        gameData.InitializeGrid(level.rows, level.columns);
+        gameManager.InitializeGrid(level.rows, level.columns);
 
         var grid = monsterGrid.GetComponent<GridLayoutGroup>();
         for (int i = 0; i < level.rows; i++) {
@@ -93,7 +93,7 @@ public class LevelManager : MonoBehaviour
                 var enemy = enemyGameObject.GetComponent<Enemy>();
                 enemy.row = i;
                 enemy.col = j;
-                gameData.AddEnemy(enemy);
+                gameManager.AddEnemy(enemy);
             }
         }
 

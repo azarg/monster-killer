@@ -7,10 +7,9 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] GameData gameData;
     [SerializeField] Image highlightImage;
     [SerializeField] Image healthIndicator;
-
+    private GameManager gameManager;
     public static event Action OnEnemyDied;
     public EnemyType enemyType;
 
@@ -26,6 +25,7 @@ public class Enemy : MonoBehaviour
     private float turnDelay = 0.1f;
 
     private void Awake() {
+        gameManager = GameManager.Instance;
         highlightImage.gameObject.SetActive(false);
         enemyImage = gameObject.GetComponent<Image>();
         enemyImage.sprite = enemyType.sprite;
@@ -41,10 +41,10 @@ public class Enemy : MonoBehaviour
 
     IEnumerator TakeTurn() {
         isTakingTurn = true;
-        gameData.ChangePlayerHealth(-dpsBeforeFight);
-        this.Hurt(gameData.GetDPS());
+        gameManager.ChangePlayerHealth(-dpsBeforeFight);
+        this.Hurt(gameManager.GetDPS());
 
-        if(gameData.playerHealth <= 0 || currentHealth <= 0) {
+        if(gameManager.playerHealth <= 0 || currentHealth <= 0) {
             isFighting = false;
         }
 
@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
     public void Hurt(float damage) {
         currentHealth -= damage;
         if (currentHealth <= 0) {
-            GameManager.Instance.gameData.RemoveEnemy(this);
+            gameManager.RemoveEnemy(this);
             OnEnemyDied?.Invoke();
             Destroy(gameObject);
             return;

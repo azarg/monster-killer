@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     EventSystem eventSystem;
 
     private bool overEnemy;
+    private Item carryingItem;
 
     private void Start() {
         raycaster = GetComponent<GraphicRaycaster>();
@@ -37,10 +38,28 @@ public class InputManager : MonoBehaviour
 
     private void HandleDefaultInput(List<RaycastResult> raycastResults) {
         bool click = Input.GetMouseButtonDown(0);
+        if (!click) return;
+
         foreach (var result in raycastResults) {
-            if (click && result.gameObject.TryGetComponent(out Level level)) {
-                levelManager.HandleLevelSelected(level);
-                break;
+            if (carryingItem != null) {
+                if (result.gameObject.TryGetComponent(out ItemContainer container)) {
+                    if (carryingItem.Drop(container)) {
+                        carryingItem = null;
+                        break;
+                    }
+                }
+            }
+            else {
+                if (result.gameObject.TryGetComponent(out Level level)) {
+                    levelManager.HandleLevelSelected(level);
+                    break;
+                }
+                if (result.gameObject.TryGetComponent(out Item item)) {
+                    if (item.Grab()) {
+                        carryingItem = item;
+                        break;
+                    }
+                }
             }
         }
     }
