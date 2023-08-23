@@ -7,23 +7,73 @@ public class LevelManager : MonoBehaviour
 {
     private GameData gameData;
 
+    [SerializeField] Level[] sequencedLevels;
+
     [SerializeField] RectTransform monsterPanel;
-    [SerializeField] RectTransform attackPanel;
-    [SerializeField] RectTransform attackPanel_defaul_position;
-    [SerializeField] RectTransform attackPanel_battle_position;
+
 
     [Header("Monster grid")]
     [SerializeField] GameObject monsterGrid;
     [SerializeField] float monsterGridPadding = 20f;
     [SerializeField] GameObject gridCellPrefab;
 
+    private Level currentLevel;
+
     private void Start() {
         gameData = GameManager.Instance.gameData;
+        UpdateLevelDisplay();
+    }
+
+    private void OnEnable() {
+        Enemy.OnEnemyDied += Enemy_OnEnemyDied;
+    }
+
+    private void OnDisable() {
+        Enemy.OnEnemyDied -= Enemy_OnEnemyDied;
+    }
+    private void Enemy_OnEnemyDied() {
+        if (gameData.enemyCount <= 0) {
+            currentLevel.isCompleted = true;
+            UpdateLevelDisplay();
+            GameManager.Instance.ChangeGameState(GameState.Default);
+        }
+    }
+
+    private void UpdateLevelDisplay() {
+        bool foundPlayableLevel = false;
+
+        for (int i = 0; i <  sequencedLevels.Length; i++) {
+            var level = sequencedLevels[i];
+            if (level.isCompleted) {
+                level.MarkAsCompleted();
+            }
+            if (level.isCompleted == false) {
+                if (foundPlayableLevel) {
+                    level.MarkAsHidden();
+                }
+                else {
+                    level.MarkAsCurrent();
+                    foundPlayableLevel = true;
+                }
+            }
+
+        }
+    }
+
+    public void HandleLevelSelected(Level level) {
+        //completed levels cannot be played again
+        if (level.isCompleted) return;
+
+        StartLevel(level);
     }
 
     public void StartLevel(Level level) {
-        attackPanel.SetParent(attackPanel_battle_position, worldPositionStays: false);
+        
+        currentLevel = level;
 
+        GameManager.Instance.ChangeGameState(GameState.InBattle);
+        
+        // TODO: this is temporary. player health should depend on stats
         gameData.SetPlayerHealth(gameData.maxPlayerHealth);
 
         // clear the grid
@@ -32,19 +82,18 @@ public class LevelManager : MonoBehaviour
         }
         
         // add cells and enemies
-        gameData.enemies = new Enemy[level.rows, level.columns];
+        gameData.InitializeGrid(level.rows, level.columns);
 
         var grid = monsterGrid.GetComponent<GridLayoutGroup>();
         for (int i = 0; i < level.rows; i++) {
             for (int j = 0; j < level.columns; j++) {
                 var cell = Instantiate(gridCellPrefab, grid.transform);
-                var enemyType = level.enemies[Random.Range(0, level.enemies.Length)];
+                var enemyType = level.enemyTypes[Random.Range(0, level.enemyTypes.Length)];
                 var enemyGameObject = Instantiate(enemyType.prefab, cell.transform);
                 var enemy = enemyGameObject.GetComponent<Enemy>();
                 enemy.row = i;
                 enemy.col = j;
-
-                gameData.enemies[i, j] = enemy;
+                gameData.AddEnemy(enemy);
             }
         }
 

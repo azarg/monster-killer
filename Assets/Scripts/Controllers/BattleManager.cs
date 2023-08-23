@@ -6,15 +6,22 @@ using UnityEngine.UI;
 public class BattleManager : MonoBehaviour 
 {
     [SerializeField] Text estimatedPlayerHealthDisplay;
-    public static BattleManager Instance;
 
     public GameData gameData;
     public Player player;
 
     private AttackBase currentAttack;
 
-    private void Awake() {
-        Instance = this;
+    private void OnEnable() {
+        Enemy.OnEnemyDied += Enemy_OnEnemyDied;
+    }
+
+    private void OnDisable() {
+        Enemy.OnEnemyDied -= Enemy_OnEnemyDied;
+    }
+
+    private void Enemy_OnEnemyDied() {
+
     }
 
     public bool IsAttackSelected() {
@@ -42,11 +49,8 @@ public class BattleManager : MonoBehaviour
     }
 
     public void RemoveAttackHighlight() {
-        if (gameData.enemies == null) return;
         foreach (var enemy in gameData.enemies) {
-            if (enemy != null) {
-                enemy.RemoveHighlight();
-            }
+            enemy.RemoveHighlight();
         }
     }
 

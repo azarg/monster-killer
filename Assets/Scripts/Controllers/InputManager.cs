@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class InputManager : MonoBehaviour
 {
     public BattleManager battleManager;
+    public LevelManager levelManager;
 
     GraphicRaycaster raycaster;
     PointerEventData pointerEventData;
@@ -21,6 +22,30 @@ public class InputManager : MonoBehaviour
     }
 
     private void Update() {
+        pointerEventData = new PointerEventData(eventSystem);
+        pointerEventData.position = Input.mousePosition;
+        var raycastResults = new List<RaycastResult>();
+        raycaster.Raycast(pointerEventData, raycastResults);
+
+        switch (GameManager.Instance.gameState) {
+            case GameState.Default:
+                HandleDefaultInput(raycastResults); break;
+            case GameState.InBattle:
+                HandleBattleInput(raycastResults); break;
+        }
+    }
+
+    private void HandleDefaultInput(List<RaycastResult> raycastResults) {
+        bool click = Input.GetMouseButtonDown(0);
+        foreach (var result in raycastResults) {
+            if (click && result.gameObject.TryGetComponent(out Level level)) {
+                levelManager.HandleLevelSelected(level);
+                break;
+            }
+        }
+    }
+
+    private void HandleBattleInput(List<RaycastResult> raycastResults) { 
         if (Input.GetKeyDown(KeyCode.Escape)) {
             battleManager.DeselectAttack();
             return;
@@ -29,11 +54,7 @@ public class InputManager : MonoBehaviour
         bool click = Input.GetMouseButtonDown(0);
         overEnemy = false;
 
-        pointerEventData = new PointerEventData(eventSystem);
-        pointerEventData.position = Input.mousePosition;
-        var results = new List<RaycastResult>();
-        raycaster.Raycast(pointerEventData, results);
-        foreach (var result in results) {
+        foreach (var result in raycastResults) {
             // if over an attack and clicked
             if (click && result.gameObject.TryGetComponent(out AttackBase attack)) {
                 battleManager.SelectAttack(attack);
@@ -62,6 +83,9 @@ public class InputManager : MonoBehaviour
         if (!overEnemy) {
             battleManager.RemoveAttackHighlight();
             battleManager.HideEstimatedHealth();
+            if (click) {
+                battleManager.DeselectAttack();
+            }
         }
     }
 }

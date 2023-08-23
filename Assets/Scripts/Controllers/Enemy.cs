@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameData gameData;
     [SerializeField] Image highlightImage;
     [SerializeField] Image healthIndicator;
-    
+
+    public static event Action OnEnemyDied;
     public EnemyType enemyType;
 
     public int row;
@@ -67,6 +69,8 @@ public class Enemy : MonoBehaviour
     public void Hurt(float damage) {
         currentHealth -= damage;
         if (currentHealth <= 0) {
+            GameManager.Instance.gameData.RemoveEnemy(this);
+            OnEnemyDied?.Invoke();
             Destroy(gameObject);
             return;
         }

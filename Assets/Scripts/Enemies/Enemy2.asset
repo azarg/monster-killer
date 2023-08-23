@@ -15,5 +15,5 @@ MonoBehaviour:
   displayName: enemy 2
   prefab: {fileID: 2570560809413710745, guid: a4671bc1dbfd5464388a925ffc89807b, type: 3}
   sprite: {fileID: 21300000, guid: a676e7ae18399de4e916e52ddf0c5f38, type: 3}
-  startingHealth: 20
-  maxDPS: 2
+  startingHealth: 13
+  maxDPS: 1.3

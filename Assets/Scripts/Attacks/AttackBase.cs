@@ -26,7 +26,7 @@ public class AttackBase : MonoBehaviour
     }
 
     protected bool EnemyExistsAt(int row, int col) {
-        var grid = gameData.enemies;
+        var grid = gameData.grid;
         if (row < grid.GetLength(0) && row > -1 &&
             col < grid.GetLength(1) && col > -1 &&
             grid[row, col] != null) {

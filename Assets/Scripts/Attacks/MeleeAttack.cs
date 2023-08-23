@@ -12,7 +12,7 @@ public class MeleeAttack : AttackBase
     }
 
     public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
-        var grid = gameData.enemies;
+        var grid = gameData.grid;
         int row = enemy.row;
         int col = enemy.col;
         var enemies = new List<AttackedEnemy>();
