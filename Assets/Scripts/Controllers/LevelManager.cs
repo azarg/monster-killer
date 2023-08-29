@@ -73,8 +73,7 @@ public class LevelManager : MonoBehaviour
 
         GameManager.Instance.ChangeGameState(GameState.InBattle);
         
-        // TODO: this is temporary. player health should depend on stats
-        gameManager.SetPlayerHealth(gameManager.maxPlayerHealth);
+        gameManager.player.ResetHealth();
 
         // clear the grid
         foreach (Transform child in monsterGrid.transform) {

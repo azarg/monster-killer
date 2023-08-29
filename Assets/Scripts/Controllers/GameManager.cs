@@ -8,13 +8,9 @@ public enum GameState { Default, InBattle }
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public event Action OnPlayerHealthChanged;
-    public LevelManager levelManager;
-    public GameState gameState;
 
-    public float playerHealth;
-    public float maxPlayerHealth = 100f;
-    public float estimatedPlayerHealthAfterFight;
+    public GameState gameState;
+    public Player player;
 
     public Enemy[,] grid { get; private set; }
     public List<Enemy> enemies { get; private set; }
@@ -46,20 +42,6 @@ public class GameManager : MonoBehaviour
             attackPanel.SetParent(attackPanel_battle_position, worldPositionStays: false);
             monsterPanel.gameObject.SetActive(true);
         }
-    }
-
-    public void SetPlayerHealth(float amount) {
-        playerHealth = amount;
-        OnPlayerHealthChanged?.Invoke();
-    }
-
-    public void ChangePlayerHealth(float amount) {
-        playerHealth += amount;
-        OnPlayerHealthChanged?.Invoke();
-    }
-
-    public float GetDPS() {
-        return 1f;
     }
 
     public void InitializeGrid(int rows, int cols) {

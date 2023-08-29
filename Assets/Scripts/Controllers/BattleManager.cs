@@ -73,25 +73,25 @@ public class BattleManager : MonoBehaviour
 
 
     public void DisplayEstimatedPlayerHealthAfterFight(Enemy attackedEnemy) {
-        if (gameManager.playerHealth <= 0) return;
+        if (gameManager.player.Health <= 0) return;
 
         float enemyDPS = 0;
 
         // attackedEnemy is the one clicked on
-        enemyDPS += attackedEnemy.GetDPS();
+        enemyDPS += attackedEnemy.GetDamage();
 
         // also need to add dps by other attacking enemies
         foreach (var enemy in gameManager.enemies) {
             if (enemy != attackedEnemy) {
                 if (enemy.IsAttacking()) {
-                    enemyDPS += enemy.GetDPS();
+                    enemyDPS += enemy.GetDamage();
                 }
             }
         }
 
         // calculate estimated player health after fight
-        var turns_for_enemy_to_die = attackedEnemy.currentHealth / player.GetDPS();
-        var estimated_player_health_after_fight = player.GetHealth() - turns_for_enemy_to_die * player.GetHPS(enemyDPS);
+        var turns_for_enemy_to_die = attackedEnemy.currentHealth / player.EstimatedDamage();
+        var estimated_player_health_after_fight = player.Health - turns_for_enemy_to_die * player.EstimatedHurt(enemyDPS);
 
         estimatedPlayerHealthDisplay.gameObject.SetActive(true);
 
@@ -105,13 +105,13 @@ public class BattleManager : MonoBehaviour
     
     public void Fight(Enemy attackedEnemy) {
         
-        if (gameManager.playerHealth <= 0) return;
+        if (gameManager.player.Health <= 0) return;
 
         attackedEnemy.Fight();
         foreach (var enemy in gameManager.enemies) {
             if (enemy != attackedEnemy) {
                 if (enemy.IsAttacking()) {
-                    enemy.Fight();
+                    enemy.Attack();
                 }
             }
         }

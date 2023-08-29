@@ -43,10 +43,8 @@ public class InputManager : MonoBehaviour
         foreach (var result in raycastResults) {
             if (carryingItem != null) {
                 if (result.gameObject.TryGetComponent(out ItemContainer container)) {
-                    if (carryingItem.Drop(container)) {
-                        carryingItem = null;
-                        break;
-                    }
+                    carryingItem = container.PutOrSwapItem(carryingItem);
+                    break;
                 }
                 if (result.gameObject.TryGetComponent(out RecyclebinManager rm)) {
                     Destroy(carryingItem.gameObject);
@@ -59,11 +57,9 @@ public class InputManager : MonoBehaviour
                     levelManager.HandleLevelSelected(level);
                     break;
                 }
-                if (result.gameObject.TryGetComponent(out Item item)) {
-                    if (item.Grab()) {
-                        carryingItem = item;
-                        break;
-                    }
+                if (result.gameObject.TryGetComponent(out ItemContainer container)) {
+                    carryingItem = container.TakeItem();
+                    break;
                 }
             }
         }

@@ -11,7 +11,7 @@ public class TestButtonHandler : MonoBehaviour, IPointerClickHandler
     private int lastItemIndex = 0;
 
     public void OnPointerClick(PointerEventData eventData) {
-        var index = lastItemIndex;//Random.Range(0, itemTypes.Length);
+        var index = lastItemIndex;
         var itemType = itemTypes[index];
         inventoryManager.AddItem(itemType);
         lastItemIndex++;

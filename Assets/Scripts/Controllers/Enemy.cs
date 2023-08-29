@@ -19,9 +19,10 @@ public class Enemy : MonoBehaviour
     private Image enemyImage;
     public float currentHealth;
 
-    private bool isFighting = false;
+    private bool isAttacking = false;
+    private bool isBeingAttacked = false;
     private bool isTakingTurn = false;
-    private float dpsBeforeFight;
+    private float currentDamage;
     private float turnDelay = 0.1f;
 
     private void Awake() {
@@ -33,7 +34,7 @@ public class Enemy : MonoBehaviour
     }
 
     private void Update() {
-        if(isFighting) {
+        if(isAttacking) {
             if(isTakingTurn == false)
                 StartCoroutine(nameof(TakeTurn));
         }
@@ -41,11 +42,15 @@ public class Enemy : MonoBehaviour
 
     IEnumerator TakeTurn() {
         isTakingTurn = true;
-        gameManager.ChangePlayerHealth(-dpsBeforeFight);
-        this.Hurt(gameManager.GetDPS());
+        gameManager.player.Hurt(currentDamage);
 
-        if(gameManager.playerHealth <= 0 || currentHealth <= 0) {
-            isFighting = false;
+        if (isBeingAttacked) {
+            this.Hurt(gameManager.player.EstimatedDamage());
+        }
+
+        if(gameManager.player.Health <= 0 || currentHealth <= 0) {
+            isAttacking = false;
+            isBeingAttacked = false;
         }
 
         yield return new WaitForSeconds(turnDelay);
@@ -77,19 +82,33 @@ public class Enemy : MonoBehaviour
         healthIndicator.fillAmount = (enemyType.startingHealth - currentHealth)/enemyType.startingHealth;
     }
 
-    public float GetDPS() {
-        float dps = enemyType.maxDPS * (currentHealth / enemyType.startingHealth);
-        return dps;
+    public float GetDamage() {
+        float damage = enemyType.baseDamage * (currentHealth / enemyType.startingHealth);
+        return damage;
     }
 
     public bool IsAttacking() {
-        // TODO: implement
-        return false;
+        return isAttacking;
     }
 
+    /// <summary>
+    /// Enemy is attacking the player but is not being attacked by player
+    /// Enemy does not take damage
+    /// </summary>
+    public void Attack() {
+        isAttacking = true;
+        isBeingAttacked = false;
+        currentDamage = GetDamage();
+    }
+        
+    /// <summary>
+    /// Enemy is both attacking and being attacked by player.
+    /// Both take damage.
+    /// </summary>
     public void Fight() {
-        isFighting = true;
-        dpsBeforeFight = GetDPS();
+        isAttacking = true;
+        isBeingAttacked = true;
+        currentDamage = GetDamage();
     }
 }
 
