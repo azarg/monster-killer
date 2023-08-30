@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] Image highlightImage;
     [SerializeField] Image healthIndicator;
     private GameManager gameManager;
-    public static event Action OnEnemyDied;
     public EnemyType enemyType;
 
     public int row;
@@ -48,7 +47,7 @@ public class Enemy : MonoBehaviour
             this.Hurt(gameManager.player.EstimatedDamage());
         }
 
-        if(gameManager.player.Health <= 0 || currentHealth <= 0) {
+        if(gameManager.player.remaining_health <= 0 || currentHealth <= 0) {
             isAttacking = false;
             isBeingAttacked = false;
         }
@@ -75,7 +74,6 @@ public class Enemy : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0) {
             gameManager.RemoveEnemy(this);
-            OnEnemyDied?.Invoke();
             Destroy(gameObject);
             return;
         }

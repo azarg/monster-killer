@@ -12,17 +12,9 @@ public class BattleManager : MonoBehaviour
     private AttackBase currentAttack;
 
     private void OnEnable() {
-        Enemy.OnEnemyDied += Enemy_OnEnemyDied;
         gameManager = GameManager.Instance;
     }
 
-    private void OnDisable() {
-        Enemy.OnEnemyDied -= Enemy_OnEnemyDied;
-    }
-
-    private void Enemy_OnEnemyDied() {
-
-    }
 
     public bool IsAttackSelected() {
         return currentAttack != null;
@@ -71,9 +63,27 @@ public class BattleManager : MonoBehaviour
         estimatedPlayerHealthDisplay.gameObject.SetActive(false);
     }
 
+    public void Fight(Enemy attackedEnemy) {
+        // safety
+        if (gameManager.player.remaining_health <= 0) return;
+
+        // can only fight with one enemy at a time
+        if (gameManager.gameState == GameState.Fighting) return;
+
+        gameManager.ChangeGameState(GameState.Fighting);
+
+        attackedEnemy.Fight();
+        foreach (var enemy in gameManager.enemies) {
+            if (enemy != attackedEnemy) {
+                if (enemy.IsAttacking()) {
+                    enemy.Attack();
+                }
+            }
+        }
+    }
 
     public void DisplayEstimatedPlayerHealthAfterFight(Enemy attackedEnemy) {
-        if (gameManager.player.Health <= 0) return;
+        if (gameManager.player.remaining_health <= 0) return;
 
         float enemyDPS = 0;
 
@@ -91,7 +101,7 @@ public class BattleManager : MonoBehaviour
 
         // calculate estimated player health after fight
         var turns_for_enemy_to_die = attackedEnemy.currentHealth / player.EstimatedDamage();
-        var estimated_player_health_after_fight = player.Health - turns_for_enemy_to_die * player.EstimatedHurt(enemyDPS);
+        var estimated_player_health_after_fight = player.remaining_health - turns_for_enemy_to_die * player.EstimatedHurt(enemyDPS);
 
         estimatedPlayerHealthDisplay.gameObject.SetActive(true);
 
@@ -102,20 +112,4 @@ public class BattleManager : MonoBehaviour
             estimatedPlayerHealthDisplay.text = "---";
         }
     }
-    
-    public void Fight(Enemy attackedEnemy) {
-        
-        if (gameManager.player.Health <= 0) return;
-
-        attackedEnemy.Fight();
-        foreach (var enemy in gameManager.enemies) {
-            if (enemy != attackedEnemy) {
-                if (enemy.IsAttacking()) {
-                    enemy.Attack();
-                }
-            }
-        }
-    }
-
-
 }

@@ -10,13 +10,16 @@ public class PlayerHealthDisplay : MonoBehaviour
 
     private void Start() {
         gameManager = GameManager.Instance;
-        gameManager.player.OnPlayerHealthChanged += OnPlayerHealthChanged;
+        gameManager.player.OnPlayerRemainingHealthChanged += OnPlayerHealthChanged;
+        gameManager.player.OnPlayerStatsChanged += OnPlayerHealthChanged;
     }
 
     private void OnDisable() {
-        
+        gameManager.player.OnPlayerRemainingHealthChanged -= OnPlayerHealthChanged;
+        gameManager.player.OnPlayerStatsChanged -= OnPlayerHealthChanged;
     }
+
     private void OnPlayerHealthChanged() {
-        playerHealth.text = $"{(int)gameManager.player.Health}/{gameManager.player.MaxHealth}";
+        playerHealth.text = $"{(int)Mathf.Max(1f, gameManager.player.remaining_health)}/{gameManager.player.stats.health}";
     }
 }

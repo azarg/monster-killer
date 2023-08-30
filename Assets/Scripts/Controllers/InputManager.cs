@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
@@ -15,11 +16,28 @@ public class InputManager : MonoBehaviour
     EventSystem eventSystem;
 
     private bool overEnemy;
+
     private Item carryingItem;
+
+    private event Action<List<RaycastResult>> handleInput;
 
     private void Start() {
         raycaster = GetComponent<GraphicRaycaster>();
         eventSystem = GetComponent<EventSystem>();
+        GameManager.Instance.StateChanged += GameStateChanged;
+        handleInput = HandleDefaultInput;
+    }
+
+    private void GameStateChanged(GameState state) {
+        battleManager.HideEstimatedHealth();
+        switch (state) {
+            case GameState.Default:
+                handleInput = HandleDefaultInput; break;
+            case GameState.PlayingLevel:
+                handleInput = HandleBattleInput; break;
+            case GameState.Fighting:
+                handleInput = HandleFightingInput; break;
+        }
     }
 
     private void Update() {
@@ -28,12 +46,11 @@ public class InputManager : MonoBehaviour
         var raycastResults = new List<RaycastResult>();
         raycaster.Raycast(pointerEventData, raycastResults);
 
-        switch (GameManager.Instance.gameState) {
-            case GameState.Default:
-                HandleDefaultInput(raycastResults); break;
-            case GameState.InBattle:
-                HandleBattleInput(raycastResults); break;
-        }
+        handleInput(raycastResults);
+    }
+
+    private void HandleFightingInput(List<RaycastResult> raycastResults) {
+        // no input processing during a fight
     }
 
     private void HandleDefaultInput(List<RaycastResult> raycastResults) {
@@ -60,6 +77,9 @@ public class InputManager : MonoBehaviour
                 if (result.gameObject.TryGetComponent(out ItemContainer container)) {
                     carryingItem = container.TakeItem();
                     break;
+                }
+                if (result.gameObject.TryGetComponent(out RestButtonHandler _)) {
+                    GameManager.Instance.player.ResetHealth();
                 }
             }
         }

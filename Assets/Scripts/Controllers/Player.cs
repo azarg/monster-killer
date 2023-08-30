@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public event Action OnPlayerHealthChanged;
+    public event Action OnPlayerRemainingHealthChanged;
     public event Action OnPlayerStatsChanged;
 
     [SerializeField] private Stats baseStats = new() { attack = 25f, defense = 10f, magic = 50f, health = 120f };
@@ -15,41 +15,28 @@ public class Player : MonoBehaviour
 
     public Stats stats;
 
-    private float health;
-    public float Health {
+    private float _remaining_health;
+    public float remaining_health {
         get {
-            return health;
+            return _remaining_health;
         }
         private set {
-            health = value;
-            OnPlayerHealthChanged?.Invoke();
-        }
-    }
-
-    private float maxHealth;
-    public float MaxHealth {
-        get {
-            return maxHealth;
-        }
-        private set {
-            maxHealth = value;
-            OnPlayerHealthChanged?.Invoke();
+            _remaining_health = value;
+            OnPlayerRemainingHealthChanged?.Invoke();
         }
     }
 
     private void Start() {
-        Health = baseStats.health;
+        remaining_health = baseStats.health;
         RecalculateStats();
     }
 
     public void ResetHealth() {
-        //TODO: max health should depend on stats;
-        MaxHealth = baseStats.health;
-        Health = MaxHealth;
+        remaining_health = stats.health;
     }
 
     public void Hurt(float damage) {
-        this.Health -= EstimatedHurt(damage);
+        this.remaining_health -= EstimatedHurt(damage);
     }
 
     /// <summary>
@@ -87,25 +74,22 @@ public class Player : MonoBehaviour
     }
 
     public void RecalculateStats() {
-        //Debug.Log("recalculating stats");
         // start with base stats
         stats.attack = baseStats.attack;
         stats.defense = baseStats.defense;
-        //Debug.Log($"base defense = {stats.defense}");
         stats.magic = baseStats.magic;
+        stats.health = baseStats.health;
 
         // add equipment stats
         foreach (EquipItemContainer container in equipment) {
-            //Debug.Log($"checking container - {container}, item - {container.item}");
             if (container.item != null) {
                 var equipItem = (EquipItem)container.item;
                 stats.attack += equipItem.stats.attack;
                 stats.defense += equipItem.stats.defense;
-                Debug.Log($"defense += {equipItem.stats.defense}");
                 stats.magic += equipItem.stats.magic;
+                stats.health += equipItem.stats.health;
             }
         }
-        //Debug.Log($"stats.defense = {stats.defense}");
         OnPlayerStatsChanged?.Invoke();
     }
 }

@@ -21,22 +21,13 @@ public class LevelManager : MonoBehaviour
 
     private void Start() {
         gameManager = GameManager.Instance;
+        gameManager.CurrentLevelCleared += CurrentLevelCleared;
         UpdateLevelDisplay();
     }
 
-    private void OnEnable() {
-        Enemy.OnEnemyDied += Enemy_OnEnemyDied;
-    }
-
-    private void OnDisable() {
-        Enemy.OnEnemyDied -= Enemy_OnEnemyDied;
-    }
-    private void Enemy_OnEnemyDied() {
-        if (gameManager.enemies.Count <= 0) {
-            currentLevel.isCompleted = true;
-            UpdateLevelDisplay();
-            GameManager.Instance.ChangeGameState(GameState.Default);
-        }
+    private void CurrentLevelCleared() {
+        currentLevel.isCompleted = true;
+        UpdateLevelDisplay();
     }
 
     private void UpdateLevelDisplay() {
@@ -64,6 +55,9 @@ public class LevelManager : MonoBehaviour
         //completed levels cannot be played again
         if (level.isCompleted) return;
 
+        // cannot play a level if player has no remaining health
+        if (gameManager.player.remaining_health <= 0) return;
+
         StartLevel(level);
     }
 
@@ -71,7 +65,7 @@ public class LevelManager : MonoBehaviour
         
         currentLevel = level;
 
-        GameManager.Instance.ChangeGameState(GameState.InBattle);
+        GameManager.Instance.ChangeGameState(GameState.PlayingLevel);
         
         gameManager.player.ResetHealth();
 

@@ -3,12 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { Default, InBattle }
+public enum GameState { 
+    Default, 
+    PlayingLevel,
+    Fighting
+}
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public event Action<GameState> StateChanged;
+    public event Action CurrentLevelCleared;
     public GameState gameState;
     public Player player;
 
@@ -32,16 +38,27 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void Start() {
+        player.OnPlayerRemainingHealthChanged += OnPlayerRemainingHealthChanged;
+    }
+
+    private void OnPlayerRemainingHealthChanged() {
+        if (player.remaining_health <= 0) {
+            ChangeGameState(GameState.Default);
+        }
+    }
+
     public void ChangeGameState(GameState state) {
         gameState = state;
         if (gameState == GameState.Default) {
             attackPanel.SetParent(attackPanel_default_position, worldPositionStays: false);
             monsterPanel.gameObject.SetActive(false);
         } 
-        if (gameState == GameState.InBattle) {
+        if (gameState == GameState.PlayingLevel) {
             attackPanel.SetParent(attackPanel_battle_position, worldPositionStays: false);
             monsterPanel.gameObject.SetActive(true);
         }
+        StateChanged?.Invoke(state);
     }
 
     public void InitializeGrid(int rows, int cols) {
@@ -52,13 +69,23 @@ public class GameManager : MonoBehaviour
 
     public void AddEnemy(Enemy enemy) {
         if (!isInitialized) throw new Exception("Grid not initialized");
+
         grid[enemy.row, enemy.col] = enemy;
         enemies.Add(enemy);
     }
 
-    internal void RemoveEnemy(Enemy enemy) {
+    public void RemoveEnemy(Enemy enemy) {
         if (!isInitialized) throw new Exception("Grid not initialized");
+        
         grid[enemy.row, enemy.col] = null;
         enemies.Remove(enemy);
+
+        if (enemies.Count == 0) {
+            CurrentLevelCleared?.Invoke();
+            ChangeGameState(GameState.Default);
+        }
+        else {
+            ChangeGameState(GameState.PlayingLevel);
+        }
     }
 }
