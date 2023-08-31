@@ -17,7 +17,7 @@ public class AttackBase : MonoBehaviour
         gameManager = GameManager.Instance;
     }
 
-    public virtual List<AttackedEnemy> GetAttackedEnemies(Enemy selectedEnemy, Vector3 mousePosition) {
+    public virtual List<AttackedEnemy> GetAttackedEnemies(Cell target_cell, Vector3 mousePosition) {
         return new List<AttackedEnemy>();
     }
 
@@ -28,7 +28,7 @@ public class AttackBase : MonoBehaviour
     protected bool EnemyExistsAt(int row, int col) {
         if (row < gameManager.grid.GetLength(0) && row > -1 &&
             col < gameManager.grid.GetLength(1) && col > -1 &&
-            gameManager.grid[row, col] != null) {
+            gameManager.grid[row, col].enemy != null) {
             return true;
         }
 

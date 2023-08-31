@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -102,19 +101,21 @@ public class InputManager : MonoBehaviour
             }
 
             // if over an enemy
-            if (result.gameObject.TryGetComponent(out Enemy enemy)) {
+            if (result.gameObject.TryGetComponent(out Cell cell)) {
                 overEnemy = true;
                 if (battleManager.IsAttackSelected()) {
                     battleManager.HideEstimatedHealth();
-                    battleManager.HighlightAttackedEnemies(enemy, Input.mousePosition);
+                    battleManager.HighlightAttackedEnemies(cell, Input.mousePosition);
                     if (click) {
-                        battleManager.ApplyCurrentAttack(enemy, Input.mousePosition);
+                        battleManager.ApplyCurrentAttack(cell, Input.mousePosition);
                     }
                 }
                 else {
-                    battleManager.DisplayEstimatedPlayerHealthAfterFight(enemy);
-                    if (click) {
-                        battleManager.Fight(enemy);
+                    if (cell.enemy != null) {
+                        battleManager.DisplayEstimatedPlayerHealthAfterFight(cell.enemy);
+                        if (click) {
+                            battleManager.Fight(cell.enemy);
+                        }
                     }
                 }
                 return;

@@ -78,15 +78,17 @@ public class LevelManager : MonoBehaviour
         gameManager.InitializeGrid(level.rows, level.columns);
 
         var grid = monsterGrid.GetComponent<GridLayoutGroup>();
-        for (int i = 0; i < level.rows; i++) {
-            for (int j = 0; j < level.columns; j++) {
-                var cell = Instantiate(gridCellPrefab, grid.transform);
+        for (int row = 0; row < level.rows; row++) {
+            for (int col = 0; col < level.columns; col++) {
+                var cellObj = Instantiate(gridCellPrefab, grid.transform);
                 var enemyType = level.enemyTypes[Random.Range(0, level.enemyTypes.Length)];
-                var enemyGameObject = Instantiate(enemyType.prefab, cell.transform);
+                var enemyGameObject = Instantiate(enemyType.prefab, cellObj.transform);
                 var enemy = enemyGameObject.GetComponent<Enemy>();
-                enemy.row = i;
-                enemy.col = j;
-                gameManager.AddEnemy(enemy);
+                var cell = cellObj.GetComponent<Cell>();
+                cell.enemy = enemy;
+                cell.row = row;
+                cell.col = col;
+                gameManager.grid[row, col] = cell;
             }
         }
 

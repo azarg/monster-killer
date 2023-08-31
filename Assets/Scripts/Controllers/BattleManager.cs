@@ -29,29 +29,31 @@ public class BattleManager : MonoBehaviour
         RemoveAttackHighlight();
     }
 
-    public void HighlightAttackedEnemies(Enemy targetEnemy, Vector3 mousePosition) {
+    public void HighlightAttackedEnemies(Cell target_cell, Vector3 mousePosition) {
         if (currentAttack == null) return;
 
         RemoveAttackHighlight();
 
-        List<AttackedEnemy> attackedEnemies = currentAttack.GetAttackedEnemies(targetEnemy, mousePosition);
+        List<AttackedEnemy> attackedEnemies = currentAttack.GetAttackedEnemies(target_cell, mousePosition);
         foreach (var attackedEnemy in attackedEnemies) {
             attackedEnemy.enemy.Highlight(currentAttack);
         }
     }
 
     public void RemoveAttackHighlight() {
-        foreach (var enemy in gameManager.enemies) {
-            enemy.RemoveHighlight();
+        foreach (var cell in gameManager.grid) {
+            if (cell.enemy != null) {
+                cell.enemy.RemoveHighlight();
+            }
         }
     }
 
-    public void ApplyCurrentAttack(Enemy enemy, Vector3 mousePosition) {
+    public void ApplyCurrentAttack(Cell target_cell, Vector3 mousePosition) {
         if (currentAttack == null) {
             return;
         }
 
-        List<AttackedEnemy> attackedEnemies = currentAttack.GetAttackedEnemies(enemy, mousePosition);
+        List<AttackedEnemy> attackedEnemies = currentAttack.GetAttackedEnemies(target_cell, mousePosition);
         foreach (AttackedEnemy attackedEnemy in attackedEnemies) {
             attackedEnemy.enemy.Hurt(currentAttack.GetDamage());
         }
@@ -73,10 +75,10 @@ public class BattleManager : MonoBehaviour
         gameManager.ChangeGameState(GameState.Fighting);
 
         attackedEnemy.Fight();
-        foreach (var enemy in gameManager.enemies) {
-            if (enemy != attackedEnemy) {
-                if (enemy.IsAttacking()) {
-                    enemy.Attack();
+        foreach (var cell in gameManager.grid) {
+            if (cell.enemy != null && cell.enemy != attackedEnemy) {
+                if (cell.enemy.IsAttacking()) {
+                    cell.enemy.Attack();
                 }
             }
         }
@@ -91,16 +93,16 @@ public class BattleManager : MonoBehaviour
         enemyDPS += attackedEnemy.GetDamage();
 
         // also need to add dps by other attacking enemies
-        foreach (var enemy in gameManager.enemies) {
-            if (enemy != attackedEnemy) {
-                if (enemy.IsAttacking()) {
-                    enemyDPS += enemy.GetDamage();
+        foreach (var cell in gameManager.grid) {
+            if (cell.enemy != null && cell.enemy != attackedEnemy) {
+                if (cell.enemy.IsAttacking()) {
+                    enemyDPS += cell.enemy.GetDamage();
                 }
             }
         }
 
         // calculate estimated player health after fight
-        var turns_for_enemy_to_die = attackedEnemy.currentHealth / player.EstimatedDamage();
+        var turns_for_enemy_to_die = Mathf.Ceil(attackedEnemy.currentHealth / player.EstimatedDamage());
         var estimated_player_health_after_fight = player.remaining_health - turns_for_enemy_to_die * player.EstimatedHurt(enemyDPS);
 
         estimatedPlayerHealthDisplay.gameObject.SetActive(true);

@@ -10,17 +10,17 @@ public class CrossAttack : AttackBase
         return baseDamage;
     }
 
-    public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
+    public override List<AttackedEnemy> GetAttackedEnemies(Cell cell, Vector3 mousePosition) {
         var grid = gameManager.grid;
-        int col = enemy.col;
-        int row = enemy.row;
+        int col = cell.col;
+        int row = cell.row;
 
         var enemies = new List<AttackedEnemy>();
 
         for (int i = 0; i < grid.GetLength(0); i++) {
             if (EnemyExistsAt(i, col))
                 enemies.Add(new AttackedEnemy() { 
-                    enemy = grid[i, col], 
+                    enemy = grid[i, col].enemy, 
                     damage = baseDamage 
                 });
         }
@@ -28,7 +28,7 @@ public class CrossAttack : AttackBase
         for (int i = 0; i < grid.GetLength(1); i++) {
             if (EnemyExistsAt(row, i))
                 enemies.Add(new AttackedEnemy() { 
-                    enemy = grid[row, i], 
+                    enemy = grid[row, i].enemy, 
                     damage = baseDamage 
                 });
         }

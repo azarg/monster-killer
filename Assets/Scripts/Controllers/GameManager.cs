@@ -18,8 +18,7 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
     public Player player;
 
-    public Enemy[,] grid { get; private set; }
-    public List<Enemy> enemies { get; private set; }
+    public Cell[,] grid { get; private set; }
 
     [SerializeField] RectTransform monsterPanel;
     [SerializeField] RectTransform attackPanel;
@@ -62,30 +61,68 @@ public class GameManager : MonoBehaviour
     }
 
     public void InitializeGrid(int rows, int cols) {
-        grid = new Enemy[rows, cols];
-        enemies = new List<Enemy>();
+        grid = new Cell[rows, cols];
         isInitialized = true;
-    }
-
-    public void AddEnemy(Enemy enemy) {
-        if (!isInitialized) throw new Exception("Grid not initialized");
-
-        grid[enemy.row, enemy.col] = enemy;
-        enemies.Add(enemy);
     }
 
     public void RemoveEnemy(Enemy enemy) {
         if (!isInitialized) throw new Exception("Grid not initialized");
         
-        grid[enemy.row, enemy.col] = null;
-        enemies.Remove(enemy);
+        foreach(var cell in grid) {
+            if (cell.enemy == enemy) {
+                cell.enemy = null;
+                break;
+            }
+        }
 
-        if (enemies.Count == 0) {
+        if (RemainingEnemyCount() == 0) {
             CurrentLevelCleared?.Invoke();
             ChangeGameState(GameState.Default);
         }
         else {
-            ChangeGameState(GameState.PlayingLevel);
+            MoveEnemies();
+            if (player.remaining_health > 0) {
+                // continue playing level if player has health
+                ChangeGameState(GameState.PlayingLevel);
+            }
         }
+    }
+
+    private int RemainingEnemyCount() {
+        int count = 0;
+        foreach(var cell in grid) {
+            if (cell.enemy != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private void MoveEnemies() {
+        //start from top left corner, going right, then down
+        //moving every enemy as far left as possible
+
+        for (var r = 0; r < grid.GetLength(0); r++) {
+            for (var c = 0; c < grid.GetLength(1); c++) {
+                
+                var from_cell = grid[r, c];
+                if (from_cell.enemy == null) continue;
+
+                for (var c1 = 0; c1 < c; c1++) {
+                    
+                    var to_cell = grid[r, c1];
+                    if (to_cell.enemy != null) continue;
+                    
+                    MoveEnemy(from_cell, to_cell);
+                    break;
+                    
+                }
+            }
+        }
+    }
+
+    private void MoveEnemy(Cell from,  Cell to) {
+        to.enemy = from.enemy;
+        from.enemy.transform.SetParent(to.transform, false);
+        from.enemy = null;
     }
 }

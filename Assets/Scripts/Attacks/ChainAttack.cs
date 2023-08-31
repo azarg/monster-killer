@@ -12,35 +12,36 @@ public class ChainAttack : AttackBase
         return baseDamage;
     }
 
-    public override List<AttackedEnemy> GetAttackedEnemies(Enemy enemy, Vector3 mousePosition) {
+    public override List<AttackedEnemy> GetAttackedEnemies(Cell target_cell, Vector3 mousePosition) {
+        if (target_cell.enemy == null) return base.GetAttackedEnemies(target_cell, mousePosition);
 
         attackedEnemies = new List<AttackedEnemy>();
-        this.enemyType = enemy.enemyType;
-        AddEnemy(enemy);
+        this.enemyType = target_cell.enemy.enemyType;
+        AddEnemy(target_cell);
         return attackedEnemies;
     }
 
-    private void AddEnemy(Enemy enemy) {
+    private void AddEnemy(Cell cell) {
         foreach(var attackedEnemy in attackedEnemies) {
-            if (attackedEnemy.enemy == enemy) return;
+            if (attackedEnemy.enemy == cell.enemy) return;
         }
         
-        attackedEnemies.Add(new AttackedEnemy() { enemy = enemy, damage = baseDamage });
+        attackedEnemies.Add(new AttackedEnemy() { enemy = cell.enemy, damage = baseDamage });
 
-        CheckAndAddEnemy(enemy.row - 1, enemy.col - 1, enemy);
-        CheckAndAddEnemy(enemy.row - 1, enemy.col, enemy);
-        CheckAndAddEnemy(enemy.row - 1, enemy.col + 1, enemy);
-        CheckAndAddEnemy(enemy.row, enemy.col - 1, enemy);
-        CheckAndAddEnemy(enemy.row, enemy.col + 1, enemy);
-        CheckAndAddEnemy(enemy.row + 1, enemy.col - 1, enemy);
-        CheckAndAddEnemy(enemy.row + 1, enemy.col, enemy);
-        CheckAndAddEnemy(enemy.row + 1, enemy.col + 1, enemy);
+        CheckAndAddEnemy(cell.row - 1, cell.col - 1);
+        CheckAndAddEnemy(cell.row - 1, cell.col);
+        CheckAndAddEnemy(cell.row - 1, cell.col + 1);
+        CheckAndAddEnemy(cell.row, cell.col - 1);
+        CheckAndAddEnemy(cell.row, cell.col + 1);
+        CheckAndAddEnemy(cell.row + 1, cell.col - 1);
+        CheckAndAddEnemy(cell.row + 1, cell.col);
+        CheckAndAddEnemy(cell.row + 1, cell.col + 1);
         return;
     }
 
-    private void CheckAndAddEnemy(int row, int col, Enemy enemy) {
+    private void CheckAndAddEnemy(int row, int col) {
         var grid = gameManager.grid;
-        if (EnemyExistsAt(row, col) && grid[row, col].enemyType == enemyType)
+        if (EnemyExistsAt(row, col) && grid[row, col].enemy.enemyType == enemyType)
             AddEnemy(grid[row, col]);
     }
 }
