@@ -10,6 +10,7 @@ public class Level : MonoBehaviour
     public int rows;
     public int columns;
     public EnemyType[] enemyTypes;
+    public ItemType[] itemTypes;
 
     [SerializeField] GameObject completedDisplay;
     [SerializeField] GameObject currentDisplay;

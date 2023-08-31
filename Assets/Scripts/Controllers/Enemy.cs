@@ -37,7 +37,6 @@ public class Enemy : MonoBehaviour
     }
 
     IEnumerator TakeTurn() {
-        Debug.Log($"enemy taking turn. enemy health = {currentHealth}, enemy dmg = {currentDamage}, player hurt = {gameManager.player.EstimatedHurt(currentDamage)}, player dmg = {gameManager.player.EstimatedDamage()}, player health = {gameManager.player.remaining_health}");
         isTakingTurn = true;
         gameManager.player.Hurt(currentDamage);
 

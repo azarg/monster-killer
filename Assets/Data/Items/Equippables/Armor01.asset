@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Armor01
   m_EditorClassIdentifier: 
   itemName: Armor 01
-  sprite: {fileID: 21300000, guid: 912a31d4799ef454182f19eb10780e63, type: 3}
+  sprite: {fileID: 21300000, guid: e9a4140802a874a419ce372083fd3898, type: 3}
   itemClass: 9
   prefab: {fileID: 6486859444241071646, guid: 5a19fc4aca4c7844eadaf0a1531a815e, type: 3}
   base_stats:
     health: 0
     attack: 0
-    defense: 10
+    defense: 5
     magic: 0
