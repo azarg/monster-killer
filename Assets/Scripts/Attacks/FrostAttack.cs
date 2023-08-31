@@ -10,18 +10,15 @@ public class FrostAttack : AttackBase
         return baseDamage;
     }
 
-    public override List<AttackedEnemy> GetAttackedEnemies(Cell cell, Vector3 mousePosition) {
+    public override List<Enemy> GetAttackedEnemies(Cell cell, Vector3 mousePosition) {
         var grid = gameManager.grid;
         int col = cell.col;
 
-        var enemies = new List<AttackedEnemy>();
+        var enemies = new List<Enemy>();
 
         for (int i = 0; i < grid.GetLength(0); i++) {
             if (EnemyExistsAt(i, col)) {
-                var attackedEnemy = new AttackedEnemy {
-                    enemy = grid[i, col].enemy,
-                    damage = this.baseDamage
-                };
+                var attackedEnemy = grid[i, col].enemy;
                 enemies.Add(attackedEnemy);
             }
         }

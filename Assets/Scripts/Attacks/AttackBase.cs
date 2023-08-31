@@ -3,12 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackedEnemy
-{
-    public Enemy enemy;
-    public float damage;
-}
-
 public class AttackBase : MonoBehaviour
 {
     protected GameManager gameManager;
@@ -17,8 +11,8 @@ public class AttackBase : MonoBehaviour
         gameManager = GameManager.Instance;
     }
 
-    public virtual List<AttackedEnemy> GetAttackedEnemies(Cell target_cell, Vector3 mousePosition) {
-        return new List<AttackedEnemy>();
+    public virtual List<Enemy> GetAttackedEnemies(Cell target_cell, Vector3 mousePosition) {
+        return new List<Enemy>();
     }
 
     public virtual float GetDamage() {

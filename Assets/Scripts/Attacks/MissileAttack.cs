@@ -11,18 +11,15 @@ public class MissileAttack : AttackBase
         return baseDamage;
     }
 
-    public override List<AttackedEnemy> GetAttackedEnemies(Cell cell, Vector3 mousePosition) {
+    public override List<Enemy> GetAttackedEnemies(Cell cell, Vector3 mousePosition) {
         var grid = gameManager.grid;
         int row = cell.row;
 
-        var enemies = new List<AttackedEnemy>();
+        var enemies = new List<Enemy>();
 
         for (int i = cell.col; i < Mathf.Min(grid.GetLength(1), cell.col + attackDepth); i++) {
             if (EnemyExistsAt(row, i)) {
-                var attackedEnemy = new AttackedEnemy {
-                    enemy = grid[row, i].enemy,
-                    damage = this.baseDamage / i
-                };
+                var attackedEnemy = grid[row, i].enemy;
                 enemies.Add(attackedEnemy);
             }
         }

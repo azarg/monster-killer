@@ -5,17 +5,17 @@ using UnityEngine;
 public class ChainAttack : AttackBase
 {
     private EnemyType enemyType;
-    private List<AttackedEnemy> attackedEnemies;
+    private List<Enemy> attackedEnemies;
     private float baseDamage = 10f;
 
     public override float GetDamage() {
         return baseDamage;
     }
 
-    public override List<AttackedEnemy> GetAttackedEnemies(Cell target_cell, Vector3 mousePosition) {
+    public override List<Enemy> GetAttackedEnemies(Cell target_cell, Vector3 mousePosition) {
         if (target_cell.enemy == null) return base.GetAttackedEnemies(target_cell, mousePosition);
 
-        attackedEnemies = new List<AttackedEnemy>();
+        attackedEnemies = new List<Enemy>();
         this.enemyType = target_cell.enemy.enemyType;
         AddEnemy(target_cell);
         return attackedEnemies;
@@ -23,10 +23,10 @@ public class ChainAttack : AttackBase
 
     private void AddEnemy(Cell cell) {
         foreach(var attackedEnemy in attackedEnemies) {
-            if (attackedEnemy.enemy == cell.enemy) return;
+            if (attackedEnemy == cell.enemy) return;
         }
         
-        attackedEnemies.Add(new AttackedEnemy() { enemy = cell.enemy, damage = baseDamage });
+        attackedEnemies.Add(cell.enemy);
 
         CheckAndAddEnemy(cell.row - 1, cell.col - 1);
         CheckAndAddEnemy(cell.row - 1, cell.col);

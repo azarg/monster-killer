@@ -34,9 +34,9 @@ public class BattleManager : MonoBehaviour
 
         RemoveAttackHighlight();
 
-        List<AttackedEnemy> attackedEnemies = currentAttack.GetAttackedEnemies(target_cell, mousePosition);
+        List<Enemy> attackedEnemies = currentAttack.GetAttackedEnemies(target_cell, mousePosition);
         foreach (var attackedEnemy in attackedEnemies) {
-            attackedEnemy.enemy.Highlight(currentAttack);
+            attackedEnemy.Highlight(currentAttack);
         }
     }
 
@@ -53,9 +53,9 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        List<AttackedEnemy> attackedEnemies = currentAttack.GetAttackedEnemies(target_cell, mousePosition);
-        foreach (AttackedEnemy attackedEnemy in attackedEnemies) {
-            attackedEnemy.enemy.Hurt(currentAttack.GetDamage());
+        List<Enemy> attackedEnemies = currentAttack.GetAttackedEnemies(target_cell, mousePosition);
+        foreach (Enemy attackedEnemy in attackedEnemies) {
+            attackedEnemy.Hurt(currentAttack.GetDamage());
         }
 
         RemoveAttackHighlight();
